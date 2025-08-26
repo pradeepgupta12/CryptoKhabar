@@ -5,5 +5,5 @@ export const tickerItems = [
   { name: "SOLANA 158.62", value: "▲ 3.84 (2.48%)", color: "text-green-600" },
   { name: "XRP 0.624", value: "▼ -0.008 (-1.27%)", color: "text-red-600" },
   { name: "DOGE 0.168", value: "▲ 0.004 (2.44%)", color: "text-green-600" },
-  { name: "CARDANO 0.482", value: "▲ 0.012 (2.55%)", color: "text-green-600" },
+  { name: "CARDANO 0.482", value: "▲ 0.012 (2.55%)", color: "text-green-600" }
   ];

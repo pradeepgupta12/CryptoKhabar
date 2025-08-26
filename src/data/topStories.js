@@ -13,8 +13,8 @@ export const topStories = [
     comments: 64,
     category: "BREAKING",
     image: {
-      link: "https://images.unsplash.com/photo-1621416950685-56b5d4c0b8a6",
-    },
+      link: "https://images.unsplash.com/photo-1621416950685-56b5d4c0b8a6"
+    }
   },
   {
     id: "eth-layer2-growth",
@@ -28,8 +28,8 @@ export const topStories = [
     comments: 37,
     category: "ANALYSIS",
     image: {
-      link: "https://images.unsplash.com/photo-1620121692029-d3f4e3d5a3b0",
-    },
+      link: "https://images.unsplash.com/photo-1620121692029-d3f4e3d5a3b0"
+    }
   },
   {
     id: "altcoins-rally",
@@ -43,8 +43,8 @@ export const topStories = [
     comments: 29,
     category: "MARKETS",
     image: {
-      link: "https://images.unsplash.com/photo-1549421263-5ec394a5adf3",
-    },
+      link: "https://images.unsplash.com/photo-1549421263-5ec394a5adf3"
+    }
   },
   {
     id: "stablecoin-bill",
@@ -58,8 +58,8 @@ export const topStories = [
     comments: 21,
     category: "REGULATION",
     image: {
-      link: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c",
-    },
+      link: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c"
+    }
   },
   {
     id: "defi-expansion",
@@ -73,8 +73,8 @@ export const topStories = [
     comments: 34,
     category: "DEFI",
     image: {
-      link: "https://images.unsplash.com/photo-1616455579100-6e8c71a5f9a5",
-    },
+      link: "https://images.unsplash.com/photo-1616455579100-6e8c71a5f9a5"
+    }
   },
   {
     id: "crypto-security-update",
@@ -88,8 +88,8 @@ export const topStories = [
     comments: 18,
     category: "SECURITY",
     image: {
-      link: "https://images.unsplash.com/photo-1518779578993-ec3579fee39f",
-    },
+      link: "https://images.unsplash.com/photo-1518779578993-ec3579fee39f"
+    }
   },
   {
     id: "nft-partnerships",
@@ -103,8 +103,8 @@ export const topStories = [
     comments: 20,
     category: "NFTS",
     image: {
-      link: "https://images.unsplash.com/photo-1611162618071-b39a2ec7c3b1",
-    },
+      link: "https://images.unsplash.com/photo-1611162618071-b39a2ec7c3b1"
+    }
   },
   {
     id: "custody-tech",
@@ -118,8 +118,8 @@ export const topStories = [
     comments: 42,
     category: "TECH",
     image: {
-      link: "https://images.unsplash.com/photo-1605792657660-596af9009e82",
-    },
+      link: "https://images.unsplash.com/photo-1605792657660-596af9009e82"
+    }
   },
   {
     id: "macro-trends",
@@ -133,8 +133,8 @@ export const topStories = [
     comments: 27,
     category: "MARKETS",
     image: {
-      link: "https://images.unsplash.com/photo-1518546305927-5a555bb7020d",
-    },
+      link: "https://images.unsplash.com/photo-1518546305927-5a555bb7020d"
+    }
   },
   {
     id: "global-adoption",
@@ -148,7 +148,7 @@ export const topStories = [
     comments: 36,
     category: "ADOPTION",
     image: {
-      link: "https://images.unsplash.com/photo-1621416950685-56b5d4c0b8a6",
-    },
-  },
+      link: "https://images.unsplash.com/photo-1621416950685-56b5d4c0b8a6"
+    }
+  }
 ];

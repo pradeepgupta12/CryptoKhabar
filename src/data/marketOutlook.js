@@ -15,7 +15,7 @@ export const marketOutlook = [
     coin: "DIA",
     tags: ["Crypto", "Markets", "Altcoins"],
     source: "https://crypto.news",
-    relatedArticles: [2, 3, 5],
+    relatedArticles: [2, 3, 5]
   },
   {
     id: 2,
@@ -31,7 +31,7 @@ export const marketOutlook = [
     coin: "PI",
     tags: ["Crypto", "Pi Network", "Markets"],
     source: "https://crypto.news",
-    relatedArticles: [1, 3, 4],
+    relatedArticles: [1, 3, 4]
   },
   {
     id: 3,
@@ -47,7 +47,7 @@ export const marketOutlook = [
     coin: "BTC",
     tags: ["Crypto", "Bitcoin", "Bull Run"],
     source: "https://crypto.news",
-    relatedArticles: [2, 4, 5],
+    relatedArticles: [2, 4, 5]
   },
   {
     id: 4,
@@ -63,7 +63,7 @@ export const marketOutlook = [
     coin: "AAVE",
     tags: ["Crypto", "DeFi", "AAVE"],
     source: "https://crypto.news",
-    relatedArticles: [3, 5, 6],
+    relatedArticles: [3, 5, 6]
   },
   {
     id: 5,
@@ -79,7 +79,7 @@ export const marketOutlook = [
     coin: "XRP",
     tags: ["Crypto", "XRP", "Markets"],
     source: "https://crypto.news",
-    relatedArticles: [1, 4, 6],
+    relatedArticles: [1, 4, 6]
   },
   {
     id: 6,
@@ -95,7 +95,7 @@ export const marketOutlook = [
     coin: "BTC, DOGE, SOL",
     tags: ["Crypto", "Flash Crash", "Leverage"],
     source: "https://crypto.news",
-    relatedArticles: [3, 4, 5],
+    relatedArticles: [3, 4, 5]
   },
   {
     id: 7,
@@ -111,7 +111,7 @@ export const marketOutlook = [
     coin: "ADA",
     tags: ["Crypto", "Cardano", "Blockchain"],
     source: "https://crypto.news",
-    relatedArticles: [5, 6, 8],
+    relatedArticles: [5, 6, 8]
   },
   {
     id: 8,
@@ -127,7 +127,7 @@ export const marketOutlook = [
     coin: "MATIC",
     tags: ["Crypto", "Polygon", "Scaling"],
     source: "https://crypto.news",
-    relatedArticles: [4, 7, 9],
+    relatedArticles: [4, 7, 9]
   },
   {
     id: 9,
@@ -143,7 +143,7 @@ export const marketOutlook = [
     coin: "LTC",
     tags: ["Crypto", "Litecoin", "Payments"],
     source: "https://crypto.news",
-    relatedArticles: [7, 8, 10],
+    relatedArticles: [7, 8, 10]
   },
   {
     id: 10,
@@ -159,6 +159,6 @@ export const marketOutlook = [
     coin: "SOL",
     tags: ["Crypto", "Solana", "Ecosystem"],
     source: "https://crypto.news",
-    relatedArticles: [6, 8, 9],
-  },
+    relatedArticles: [6, 8, 9]
+  }
 ];

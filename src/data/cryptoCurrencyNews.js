@@ -1,3 +1,5 @@
+// cryptoCurrencyNews.js
+
 export const cryptoCurrencyNews = [
   {
     id: "featured",
@@ -11,8 +13,8 @@ export const cryptoCurrencyNews = [
     comments: 89,
     category: "BREAKING",
     image: {
-      link: "https://cdn6.aptoide.com/imgs/d/c/0/dc0a14a0bf284ec5163f994ca863886e_fgraphic.png",
-    },
+      link: "https://cdn6.aptoide.com/imgs/d/c/0/dc0a14a0bf284ec5163f994ca863886e_fgraphic.png"
+    }
   },
   {
     id: "btc-futures-open-interest",
@@ -26,8 +28,8 @@ export const cryptoCurrencyNews = [
     comments: 27,
     category: "MARKETS",
     image: {
-      link: "https://images.unsplash.com/photo-1621416950685-56b5d4c0b8a6",
-    },
+      link: "https://images.unsplash.com/photo-1621416950685-56b5d4c0b8a6"
+    }
   },
   {
     id: "eth-upgrade-roadmap",
@@ -41,8 +43,8 @@ export const cryptoCurrencyNews = [
     comments: 53,
     category: "ANALYSIS",
     image: {
-      link: "https://images.unsplash.com/photo-1620121692029-d3f4e3d5a3b0",
-    },
+      link: "https://images.unsplash.com/photo-1620121692029-d3f4e3d5a3b0"
+    }
   },
   {
     id: "altseason-watchlist",
@@ -56,8 +58,8 @@ export const cryptoCurrencyNews = [
     comments: 41,
     category: "RESEARCH",
     image: {
-      link: "https://images.unsplash.com/photo-1549421263-5ec394a5adf3",
-    },
+      link: "https://images.unsplash.com/photo-1549421263-5ec394a5adf3"
+    }
   },
   {
     id: "regulation-roundup",
@@ -71,8 +73,8 @@ export const cryptoCurrencyNews = [
     comments: 18,
     category: "REGULATION",
     image: {
-      link: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c",
-    },
+      link: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c"
+    }
   },
   {
     id: "defi-tvl-climbs",
@@ -86,8 +88,8 @@ export const cryptoCurrencyNews = [
     comments: 22,
     category: "DEFI",
     image: {
-      link: "https://images.unsplash.com/photo-1616455579100-6e8c71a5f9a5",
-    },
+      link: "https://images.unsplash.com/photo-1616455579100-6e8c71a5f9a5"
+    }
   },
   {
     id: "security-bridge-exploit",
@@ -101,8 +103,8 @@ export const cryptoCurrencyNews = [
     comments: 34,
     category: "SECURITY",
     image: {
-      link: "https://images.unsplash.com/photo-1518779578993-ec3579fee39f",
-    },
+      link: 'https://images.unsplash.com/photo-1518779578993-ec3579fee39f'
+    }
   },
   {
     id: "nft-market-revival",
@@ -116,8 +118,8 @@ export const cryptoCurrencyNews = [
     comments: 19,
     category: "NFTS",
     image: {
-      link: "https://images.unsplash.com/photo-1611162618071-b39a2ec7c3b1",
-    },
+      link: "https://images.unsplash.com/photo-1611162618071-b39a2ec7c3b1"
+    }
   },
   {
     id: "beginner-custody-guide",
@@ -131,8 +133,8 @@ export const cryptoCurrencyNews = [
     comments: 62,
     category: "GUIDE",
     image: {
-      link: "https://images.unsplash.com/photo-1605792657660-596af9009e82",
-    },
+      link: "https://images.unsplash.com/photo-1605792657660-596af9009e82"
+    }
   },
   {
     id: "macro-bitcoin-correlation",
@@ -146,7 +148,7 @@ export const cryptoCurrencyNews = [
     comments: 25,
     category: "MARKETS",
     image: {
-      link: "https://images.unsplash.com/photo-1518546305927-5a555bb7020d",
-    },
-  },
+      link: "https://images.unsplash.com/photo-1518546305927-5a555bb7020d"
+    }
+  }
 ];
