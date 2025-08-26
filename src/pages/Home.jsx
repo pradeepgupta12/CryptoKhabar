@@ -509,7 +509,7 @@ import { LatestCasinoNews } from '../data/LatestCasinoNews';
 import { cryptoCurrencyNews } from '../data/cryptoCurrencyNews';
 import { newsPage } from '../data/newsPage';
 import { partnerContent } from '../data/partnerContent';
-import { deepDive } from '../data/deepdive';
+import { deepDive } from '../data/deepDive';
 import { pressReleases } from '../data/pressReleases';
 import { topStories } from '../data/topStories';
 import { marketOutlook } from '../data/marketOutlook';
