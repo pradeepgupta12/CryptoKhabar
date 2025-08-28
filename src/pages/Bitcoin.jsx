@@ -1,177 +1,123 @@
-import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+
+
+
+import React from "react";
+import bitcoinData from "../data/bitcoinData"; // Import bitcoinData.js
 
 function Bitcoin() {
-  const [likes, setLikes] = useState({
-    btcEtf: 342,
-    lightningGrowth: 198
-  });
-  const [chartTimeframe, setChartTimeframe] = useState('1D');
-
-  const showArticle = (articleId) => alert(`Opening article: ${articleId}`);
-  const shareArticle = () => {
-    if (navigator.share) {
-      navigator.share({
-        title: 'CryptoNews Article',
-        text: 'Check out this crypto news article',
-        url: window.location.href
-      });
-    } else {
-      navigator.clipboard.writeText(window.location.href);
-      alert('Link copied to clipboard!');
-    }
-  };
-  const likeArticle = (articleId) => {
-    setLikes((prev) => ({ ...prev, [articleId]: prev[articleId] + 1 }));
-  };
-  const updateChart = (timeframe) => {
-    setChartTimeframe(timeframe);
-    alert(`Chart updated to ${timeframe} view`);
-  };
-
   return (
-    <div className="page">
-      <main className=" max-w-7xl mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Bitcoin News & Analysis</h1>
-          <p className="text-gray-600">Latest updates, price analysis, and developments in the Bitcoin ecosystem</p>
-        </div>
+    <div className="page mt-20">
+      <main className="max-w-7xl mx-auto px-4 py-8">
+        {/* Bitcoin News Section */}
+        <section className="mb-12">
+          <div className="text-left">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Bitcoin News
+            </h2>
+            <p className="text-gray-600 text-lg leading-relaxed">
+              {bitcoinData.bitcoin_news.description}
+            </p>
+          </div>
+        </section>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2">
-            <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-bold">Bitcoin Price Chart</h2>
-                <div className="flex space-x-2">
-                  <button onClick={() => updateChart('1D')} className={`px-3 py-1 rounded text-sm ${chartTimeframe === '1D' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'}`}>
-                    1D
-                  </button>
-                  <button onClick={() => updateChart('1W')} className={`px-3 py-1 rounded text-sm ${chartTimeframe === '1W' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'}`}>
-                    1W
-                  </button>
-                  <button onClick={() => updateChart('1M')} className={`px-3 py-1 rounded text-sm ${chartTimeframe === '1M' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'}`}>
-                    1M
-                  </button>
-                  <button onClick={() => updateChart('1Y')} className={`px-3 py-1 rounded text-sm ${chartTimeframe === '1Y' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'}`}>
-                    1Y
-                  </button>
+        {/* Top Bitcoin Stories */}
+        <section className="mb-12">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">
+            Top Bitcoin Highlights
+          </h2>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Left Big Story */}
+            <div className="lg:col-span-2">
+              {bitcoinData.top_bitcoin_stories.stories.slice(0, 1).map((story) => (
+                <div
+                  key={story.id}
+                  className="relative rounded-lg overflow-hidden shadow-md h-full"
+                >
+                  <img
+                    src={story.image} // Use direct URL from JSON
+                    alt={story.headline}
+                    className="w-full h-[500px] object-cover"
+                    onError={(e) => (e.target.src = "https://via.placeholder.com/500x500")}
+                  />
+                  <div className="absolute top-2 left-2 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded">
+                    {story.tag}
+                  </div>
+                  <div className="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-black/80 to-transparent">
+                    <h3 className="text-white text-xl font-bold">{story.headline}</h3>
+                  </div>
                 </div>
-              </div>
-              <div className="h-64 bg-gray-50 rounded-lg flex items-end justify-between p-4">
-                <div className="chart-bar bg-orange-500 w-8 rounded-t" style={{ height: '60%' }}></div>
-                <div className="chart-bar bg-orange-500 w-8 rounded-t" style={{ height: '75%' }}></div>
-                <div className="chart-bar bg-orange-500 w-8 rounded-t" style={{ height: '45%' }}></div>
-                <div className="chart-bar bg-orange-500 w-8 rounded-t" style={{ height: '80%' }}></div>
-                <div className="chart-bar bg-orange-500 w-8 rounded-t" style={{ height: '90%' }}></div>
-                <div className="chart-bar bg-orange-500 w-8 rounded-t" style={{ height: '70%' }}></div>
-                <div className="chart-bar bg-orange-500 w-8 rounded-t" style={{ height: '85%' }}></div>
-                <div className="chart-bar bg-orange-500 w-8 rounded-t" style={{ height: '95%' }}></div>
-              </div>
-              <div className="mt-4 grid grid-cols-4 gap-4 text-center text-sm">
-                <div>
-                  <div className="font-medium">$43,250</div>
-                  <div className="text-gray-500">Current</div>
-                </div>
-                <div>
-                  <div className="font-medium text-green-600">+2.5%</div>
-                  <div className="text-gray-500">24h Change</div>
-                </div>
-                <div>
-                  <div className="font-medium">$45,200</div>
-                  <div className="text-gray-500">24h High</div>
-                </div>
-                <div>
-                  <div className="font-medium">$42,100</div>
-                  <div className="text-gray-500">24h Low</div>
-                </div>
-              </div>
+              ))}
             </div>
 
-            <div className="space-y-6">
-              <article className="bg-white rounded-lg shadow-md p-6 crypto-card">
-                <div className="flex items-start space-x-4">
-                  <div className="w-24 h-24 bg-gradient-to-r from-orange-400 to-red-500 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <span className="text-white text-2xl">₿</span>
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold text-gray-900 mb-2 hover:text-blue-600 cursor-pointer" onClick={() => showArticle('btc-etf')}>
-                      Bitcoin ETF Sees Record $2.1B Inflows This Week
-                    </h3>
-                    <p className="text-gray-600 mb-3">
-                      Institutional investors continue to pour money into Bitcoin ETFs, with BlackRock's IBIT leading the charge. The surge in demand comes as traditional finance embraces digital assets at an unprecedented pace.
-                    </p>
-                    <div className="flex items-center justify-between text-sm text-gray-500">
-                      <div className="flex items-center space-x-4">
-                        <span>Sarah Johnson</span>
-                        <span>•</span>
-                        <span>1 hour ago</span>
-                        <span>•</span>
-                        <span>4 min read</span>
-                      </div>
-                      <div className="flex items-center space-x-4">
-                        <button onClick={() => likeArticle('btcEtf')} className="hover:text-blue-600">👍 {likes.btcEtf}</button>
-                        <button onClick={shareArticle} className="hover:text-blue-600">📤</button>
-                      </div>
+            {/* Right 4 Small Stories */}
+            <div className="grid grid-cols-2 grid-rows-2 gap-4 h-[500px]">
+              {bitcoinData.top_bitcoin_stories.stories.slice(1, 5).map((story) => (
+                <div
+                  key={story.id}
+                  className="bg-white rounded-lg shadow-md flex flex-col overflow-hidden"
+                >
+                  <div className="relative w-full h-[calc(100%-64px)]">
+                    <img
+                      src={story.image} // Use direct URL from JSON
+                      alt={story.headline}
+                      className="w-full h-full object-cover rounded-lg"
+                      onError={(e) => (e.target.src = "https://via.placeholder.com/500x500")}
+                    />
+                    <div className="absolute top-2 left-2 bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded">
+                      {story.tag}
                     </div>
                   </div>
-                </div>
-              </article>
-
-              <article className="bg-white rounded-lg shadow-md p-6 crypto-card">
-                <div className="flex items-start space-x-4">
-                  <div className="w-24 h-24 bg-gradient-to-r from-blue-400 to-purple-500 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <span className="text-white text-2xl">⚡</span>
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold text-gray-900 mb-2 hover:text-blue-600 cursor-pointer" onClick={() => showArticle('lightning-growth')}>
-                      Lightning Network Capacity Reaches 5,000 BTC Milestone
-                    </h3>
-                    <p className="text-gray-600 mb-3">
-                      Bitcoin's Lightning Network continues its rapid expansion, with total capacity now exceeding 5,000 BTC. The growth is driven by increased adoption from merchants and payment processors worldwide.
-                    </p>
-                    <div className="flex items-center justify-between text-sm text-gray-500">
-                      <div className="flex items-center space-x-4">
-                        <span>Mike Chen</span>
-                        <span>•</span>
-                        <span>3 hours ago</span>
-                        <span>•</span>
-                        <span>6 min read</span>
-                      </div>
-                      <div className="flex items-center space-x-4">
-                        <button onClick={() => likeArticle('lightningGrowth')} className="hover:text-blue-600">👍 {likes.lightningGrowth}</button>
-                        <button onClick={shareArticle} className="hover:text-blue-600">📤</button>
-                      </div>
-                    </div>
+                  <div className="w-full h-16 p-2 bg-white flex items-center">
+                    <h4 className="text-gray-900 text-sm font-bold mt-1 line-clamp-3">
+                      {story.headline}
+                    </h4>
                   </div>
                 </div>
-              </article>
+              ))}
             </div>
           </div>
+        </section>
 
+        {/* Latest Bitcoin News */}
+        <section>
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">
+            Recent Bitcoin Updates
+          </h2>
           <div className="space-y-6">
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h3 className="text-lg font-bold text-gray-900 mb-4">Bitcoin Statistics</h3>
-              <div className="space-y-3">
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Market Cap</span>
-                  <span className="font-medium">$847.2B</span>
+            {bitcoinData.latest_bitcoin_news.articles.map((article) => (
+              <div
+                key={article.id}
+                className="flex flex-col md:flex-row bg-white rounded-lg shadow-md overflow-hidden"
+              >
+                {/* Article Image */}
+                <div className="md:w-1/3">
+                  <img
+                    src={article.image} // Use direct URL from JSON
+                    alt={article.headline}
+                    className="w-full h-48 md:h-auto md:max-h-[180px] object-cover rounded-lg"
+                    onError={(e) => (e.target.src = "https://via.placeholder.com/500x500")}
+                  />
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">24h Volume</span>
-                  <span className="font-medium">$28.4B</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Circulating Supply</span>
-                  <span className="font-medium">19.6M BTC</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Total Supply</span>
-                  <span className="font-medium">21M BTC</span>
+                {/* Article Content */}
+                <div className="p-4 flex-1 min-h-[180px]">
+                  <span className="text-xs font-semibold text-gray-500 uppercase">
+                    {article.tag}
+                  </span>
+                  <h3 className="text-lg font-bold text-gray-900 mb-2 hover:text-blue-600 cursor-pointer">
+                    {article.headline}
+                  </h3>
+                  <p className="text-gray-600 mb-3 line-clamp-2">{article.summary}</p>
+                  <div className="flex items-center space-x-4 text-sm text-gray-500">
+                    <span className="bg-orange-100 text-orange-600 px-2 py-1 rounded">
+                      {article.coin}
+                    </span>
+                    <span>{article.time}</span>
+                  </div>
                 </div>
               </div>
-            </div>
+            ))}
           </div>
-        </div>
+        </section>
       </main>
     </div>
   );

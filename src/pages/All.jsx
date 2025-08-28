@@ -1,45 +1,70 @@
 
 
-
 import React from "react";
-import ethereumData from "../data/ethereumData"; // Import ethereumData.js
+import allData from "../data/allData"; // Import allData.js
 
-function Ethereum() {
+function All() {
+  // Aggregate top stories from all categories
+  const topStories = [
+    ...allData.bitcoin.top_bitcoin_stories.stories,
+    ...allData.ethereum.top_ethereum_stories.stories,
+    ...allData.blockchain.top_blockchain_stories.stories,
+    ...allData.defi.top_defi_stories.stories,
+    ...allData.nft.top_nft_stories.stories,
+  ];
+
+  // Aggregate latest news articles and sort by recency
+  const latestNews = [
+    ...allData.bitcoin.latest_bitcoin_news.articles,
+    ...allData.ethereum.latest_ethereum_news.articles,
+    ...allData.blockchain.latest_blockchain_news.articles,
+    ...allData.defi.latest_defi_news.articles,
+    ...allData.nft.latest_nft_news.articles,
+  ].sort((a, b) => {
+    const parseTime = (timeStr) => {
+      if (!timeStr) return Infinity;
+      const [value, unit] = timeStr.split(" ");
+      const num = parseInt(value, 10);
+      if (unit.includes("hour")) return num * 60;
+      if (unit.includes("day")) return num * 24 * 60;
+      return num;
+    };
+    return parseTime(a.time) - parseTime(b.time);
+  });
+
   return (
     <div className="page mt-20">
       <main className="max-w-7xl mx-auto px-4 py-8">
-        {/* Ethereum News Section */}
-        <section className="mb-12">
-          <div className="max-w-7xl mx-auto text-left">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Ethereum News
-            </h2>
-            <p className="text-gray-600 text-lg leading-relaxed">
-              {ethereumData.ethereum_news.description}
-            </p>
-          </div>
+        {/* All News Section */}
+        <section className="mb-12 text-left">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+            All Crypto News
+          </h2>
+          <p className="text-gray-600 text-lg leading-relaxed">
+            Explore the latest updates across Bitcoin, Ethereum, Blockchain, DeFi,
+            and NFTs — covering market trends, technological innovations, and
+            global adoption shaping the future of cryptocurrency.
+          </p>
         </section>
 
-        {/* Top Ethereum Stories */}
+        {/* Top Stories */}
         <section className="mb-12">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">
-            Top Ethereum Highlights
+            Top Crypto Highlights
           </h2>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Left Big Story (2/3 width) */}
+            {/* Left Big Story */}
             <div className="lg:col-span-2">
-              {ethereumData.top_ethereum_stories.stories.slice(0, 1).map((story) => (
+              {topStories.slice(0, 1).map((story) => (
                 <div
                   key={story.id}
                   className="relative rounded-lg overflow-hidden shadow-md h-full"
                 >
                   <img
-                    src={story.image}
+                    src={story.image} // Use direct URL from JSON
                     alt={story.headline}
                     className="w-full h-[500px] object-cover"
-                    onError={(e) =>
-                      (e.target.src = "https://via.placeholder.com/500x500")
-                    }
+                    onError={(e) => (e.target.src = "https://via.placeholder.com/500x500")}
                   />
                   <div className="absolute top-2 left-2 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded">
                     {story.tag}
@@ -51,21 +76,19 @@ function Ethereum() {
               ))}
             </div>
 
-            {/* Right Side 4 Small Stories (2x2 grid) */}
+            {/* Right 4 Small Stories */}
             <div className="grid grid-cols-2 grid-rows-2 gap-4 h-[500px]">
-              {ethereumData.top_ethereum_stories.stories.slice(1, 5).map((story) => (
+              {topStories.slice(1, 5).map((story) => (
                 <div
                   key={story.id}
                   className="bg-white rounded-lg shadow-md flex flex-col overflow-hidden"
                 >
                   <div className="relative w-full h-[calc(100%-64px)]">
                     <img
-                      src={story.image}
+                      src={story.image} // Use direct URL from JSON
                       alt={story.headline}
                       className="w-full h-full object-cover rounded-lg"
-                      onError={(e) =>
-                        (e.target.src = "https://via.placeholder.com/500x500")
-                      }
+                      onError={(e) => (e.target.src = "https://via.placeholder.com/500x500")}
                     />
                     <div className="absolute top-2 left-2 bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded">
                       {story.tag}
@@ -82,13 +105,13 @@ function Ethereum() {
           </div>
         </section>
 
-        {/* Latest Ethereum News */}
+        {/* Latest News */}
         <section>
           <h2 className="text-2xl font-bold text-gray-900 mb-6">
-            Recent Ethereum Updates
+            Recent Crypto Updates
           </h2>
           <div className="space-y-6">
-            {ethereumData.latest_ethereum_news.articles.map((article) => (
+            {latestNews.map((article) => (
               <div
                 key={article.id}
                 className="flex flex-col md:flex-row bg-white rounded-lg shadow-md overflow-hidden"
@@ -96,12 +119,10 @@ function Ethereum() {
                 {/* Article Image */}
                 <div className="md:w-1/3">
                   <img
-                    src={article.image}
+                    src={article.image} // Use direct URL from JSON
                     alt={article.headline}
                     className="w-full h-48 md:h-auto md:max-h-[180px] object-cover rounded-lg"
-                    onError={(e) =>
-                      (e.target.src = "https://via.placeholder.com/500x500")
-                    }
+                    onError={(e) => (e.target.src = "https://via.placeholder.com/500x500")}
                   />
                 </div>
                 {/* Article Content */}
@@ -114,9 +135,11 @@ function Ethereum() {
                   </h3>
                   <p className="text-gray-600 mb-3 line-clamp-2">{article.summary}</p>
                   <div className="flex items-center space-x-4 text-sm text-gray-500">
-                    <span className="bg-orange-100 text-orange-600 px-2 py-1 rounded">
-                      {article.coin}
-                    </span>
+                    {article.coin && (
+                      <span className="bg-orange-100 text-orange-600 px-2 py-1 rounded">
+                        {article.coin}
+                      </span>
+                    )}
                     <span>{article.time}</span>
                   </div>
                 </div>
@@ -129,4 +152,4 @@ function Ethereum() {
   );
 }
 
-export default Ethereum;
+export default All;

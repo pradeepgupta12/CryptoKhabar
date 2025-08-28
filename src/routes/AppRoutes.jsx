@@ -32,7 +32,7 @@
 // export default AppRoutes;
 
 
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from '../component/Navbar';
 import Footer from '../component/Footer';
 import Home from '../pages/Home';
@@ -42,6 +42,18 @@ import DeFi from '../pages/DeFi';
 import NFTs from '../pages/NFTs';
 import Markets from '../pages/Markets';
 import Analysis from '../pages/Analysis';
+import BlockChain from '../pages/BlockChain';
+import All from '../pages/All';
+import { useLayoutEffect } from 'react';
+
+// Scroll handler
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+};
 const AppRoutes =() =>{
   return (
     <Router>
@@ -56,6 +68,8 @@ const AppRoutes =() =>{
             <Route path="/nfts" element={<NFTs />} />
             <Route path="/markets" element={<Markets />} />
             <Route path="/analysis" element={<Analysis />} />
+            <Route path="/blockchain" element={<BlockChain/>} />
+            <Route path="/all" element={<All/>} />
           </Routes>
       
         <Footer />

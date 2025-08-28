@@ -1,34 +1,33 @@
 
 
-
 import React from "react";
-import ethereumData from "../data/ethereumData"; // Import ethereumData.js
+import blockchainData from "../data/blockchainData"; // Import blockchainData.js
 
-function Ethereum() {
+function BlockChain() {
   return (
     <div className="page mt-20">
       <main className="max-w-7xl mx-auto px-4 py-8">
-        {/* Ethereum News Section */}
+        {/* Blockchain News Section */}
         <section className="mb-12">
           <div className="max-w-7xl mx-auto text-left">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Ethereum News
+              Blockchain News
             </h2>
             <p className="text-gray-600 text-lg leading-relaxed">
-              {ethereumData.ethereum_news.description}
+              {blockchainData.blockchain_news.description}
             </p>
           </div>
         </section>
 
-        {/* Top Ethereum Stories */}
+        {/* Top Blockchain Stories */}
         <section className="mb-12">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">
-            Top Ethereum Highlights
+            Top Blockchain Highlights
           </h2>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Left Big Story (2/3 width) */}
             <div className="lg:col-span-2">
-              {ethereumData.top_ethereum_stories.stories.slice(0, 1).map((story) => (
+              {blockchainData.top_blockchain_stories.stories.slice(0, 1).map((story) => (
                 <div
                   key={story.id}
                   className="relative rounded-lg overflow-hidden shadow-md h-full"
@@ -53,7 +52,7 @@ function Ethereum() {
 
             {/* Right Side 4 Small Stories (2x2 grid) */}
             <div className="grid grid-cols-2 grid-rows-2 gap-4 h-[500px]">
-              {ethereumData.top_ethereum_stories.stories.slice(1, 5).map((story) => (
+              {blockchainData.top_blockchain_stories.stories.slice(1, 5).map((story) => (
                 <div
                   key={story.id}
                   className="bg-white rounded-lg shadow-md flex flex-col overflow-hidden"
@@ -82,13 +81,13 @@ function Ethereum() {
           </div>
         </section>
 
-        {/* Latest Ethereum News */}
+        {/* Latest Blockchain News */}
         <section>
           <h2 className="text-2xl font-bold text-gray-900 mb-6">
-            Recent Ethereum Updates
+            Recent Blockchain Updates
           </h2>
           <div className="space-y-6">
-            {ethereumData.latest_ethereum_news.articles.map((article) => (
+            {blockchainData.latest_blockchain_news.articles.map((article) => (
               <div
                 key={article.id}
                 className="flex flex-col md:flex-row bg-white rounded-lg shadow-md overflow-hidden"
@@ -129,4 +128,4 @@ function Ethereum() {
   );
 }
 
-export default Ethereum;
+export default BlockChain;
