@@ -1,25 +1,29 @@
 
 
+
 import React from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import allData from "../data/allData"; // Import allData.js
 
 function All() {
+  const navigate = useNavigate(); // Initialize navigate hook
+
   // Aggregate top stories from all categories
   const topStories = [
-    ...allData.bitcoin.top_bitcoin_stories.stories,
-    ...allData.ethereum.top_ethereum_stories.stories,
-    ...allData.blockchain.top_blockchain_stories.stories,
-    ...allData.defi.top_defi_stories.stories,
-    ...allData.nft.top_nft_stories.stories,
+    ...allData.bitcoin.top_bitcoin_stories.stories.map((story) => ({ ...story, category: "bitcoin" })),
+    ...allData.ethereum.top_ethereum_stories.stories.map((story) => ({ ...story, category: "ethereum" })),
+    ...allData.blockchain.top_blockchain_stories.stories.map((story) => ({ ...story, category: "blockchain" })),
+    ...allData.defi.top_defi_stories.stories.map((story) => ({ ...story, category: "defi" })),
+    ...allData.nft.top_nft_stories.stories.map((story) => ({ ...story, category: "nft" })),
   ];
 
   // Aggregate latest news articles and sort by recency
   const latestNews = [
-    ...allData.bitcoin.latest_bitcoin_news.articles,
-    ...allData.ethereum.latest_ethereum_news.articles,
-    ...allData.blockchain.latest_blockchain_news.articles,
-    ...allData.defi.latest_defi_news.articles,
-    ...allData.nft.latest_nft_news.articles,
+    ...allData.bitcoin.latest_bitcoin_news.articles.map((article) => ({ ...article, category: "bitcoin" })),
+    ...allData.ethereum.latest_ethereum_news.articles.map((article) => ({ ...article, category: "ethereum" })),
+    ...allData.blockchain.latest_blockchain_news.articles.map((article) => ({ ...article, category: "blockchain" })),
+    ...allData.defi.latest_defi_news.articles.map((article) => ({ ...article, category: "defi" })),
+    ...allData.nft.latest_nft_news.articles.map((article) => ({ ...article, category: "nft" })),
   ].sort((a, b) => {
     const parseTime = (timeStr) => {
       if (!timeStr) return Infinity;
@@ -31,6 +35,11 @@ function All() {
     };
     return parseTime(a.time) - parseTime(b.time);
   });
+
+  // Handler for navigating to AllDetailsPage
+  const handleCardClick = (item, type) => {
+    navigate(`/all/${item.category}/${item.id}`, { state: { item, type } });
+  };
 
   return (
     <div className="page mt-20">
@@ -57,13 +66,14 @@ function All() {
             <div className="lg:col-span-2">
               {topStories.slice(0, 1).map((story) => (
                 <div
-                  key={story.id}
-                  className="relative rounded-lg overflow-hidden shadow-md h-full"
+                  key={`${story.category}-${story.id}`}
+                  className="relative rounded-lg overflow-hidden shadow-md h-full transition duration-300 ease-in-out transform hover:-translate-y-2 cursor-pointer"
+                  onClick={() => handleCardClick(story, "story")} // Add click handler
                 >
                   <img
-                    src={story.image} // Use direct URL from JSON
+                    src={story.image}
                     alt={story.headline}
-                    className="w-full h-[500px] object-cover"
+                    className="w-full h-[500px] object-cover-contain"
                     onError={(e) => (e.target.src = "https://via.placeholder.com/500x500")}
                   />
                   <div className="absolute top-2 left-2 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded">
@@ -80,14 +90,15 @@ function All() {
             <div className="grid grid-cols-2 grid-rows-2 gap-4 h-[500px]">
               {topStories.slice(1, 5).map((story) => (
                 <div
-                  key={story.id}
-                  className="bg-white rounded-lg shadow-md flex flex-col overflow-hidden"
+                  key={`${story.category}-${story.id}`}
+                  className="bg-white rounded-lg shadow-md flex flex-col overflow-hidden transition duration-300 ease-in-out transform hover:-translate-y-2 cursor-pointer"
+                  onClick={() => handleCardClick(story, "story")} // Add click handler
                 >
                   <div className="relative w-full h-[calc(100%-64px)]">
                     <img
-                      src={story.image} // Use direct URL from JSON
+                      src={story.image}
                       alt={story.headline}
-                      className="w-full h-full object-cover rounded-lg"
+                      className="w-full h-full object-cover-contain rounded-lg"
                       onError={(e) => (e.target.src = "https://via.placeholder.com/500x500")}
                     />
                     <div className="absolute top-2 left-2 bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded">
@@ -113,15 +124,16 @@ function All() {
           <div className="space-y-6">
             {latestNews.map((article) => (
               <div
-                key={article.id}
-                className="flex flex-col md:flex-row bg-white rounded-lg shadow-md overflow-hidden"
+                key={`${article.category}-${article.id}`}
+                className="flex flex-col md:flex-row bg-white rounded-lg shadow-md overflow-hidden transition duration-300 ease-in-out transform hover:-translate-y-2 cursor-pointer"
+                onClick={() => handleCardClick(article, "article")} // Add click handler
               >
                 {/* Article Image */}
                 <div className="md:w-1/3">
                   <img
-                    src={article.image} // Use direct URL from JSON
+                    src={article.image}
                     alt={article.headline}
-                    className="w-full h-48 md:h-auto md:max-h-[180px] object-cover rounded-lg"
+                    className="w-full h-48 md:h-auto md:max-h-[180px] object-cover-contain rounded-lg"
                     onError={(e) => (e.target.src = "https://via.placeholder.com/500x500")}
                   />
                 </div>

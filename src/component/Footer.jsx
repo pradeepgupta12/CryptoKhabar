@@ -48,10 +48,10 @@ function Footer() {
           <div>
             <h3 className="text-lg font-bold mb-4">Resources</h3>
             <ul className="space-y-2 text-sm">
-              <li><a href="#about" className="hover:text-blue-400 transition-colors">About Us</a></li>
-              <li><a href="#contact" className="hover:text-blue-400 transition-colors">Contact</a></li>
-              <li><a href="#privacy" className="hover:text-blue-400 transition-colors">Privacy Policy</a></li>
-              <li><a href="#terms" className="hover:text-blue-400 transition-colors">Terms of Service</a></li>
+              <li><a href="/about" className="hover:text-blue-400 transition-colors">About Us</a></li>
+              <li><a href="/contact" className="hover:text-blue-400 transition-colors">Contact</a></li>
+              <li><a href="/privacy" className="hover:text-blue-400 transition-colors">Privacy Policy</a></li>
+              <li><a href="/terms" className="hover:text-blue-400 transition-colors">Terms of Service</a></li>
             </ul>
           </div>
           

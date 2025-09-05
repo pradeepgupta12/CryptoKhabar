@@ -1,16 +1,24 @@
 
 
 import React from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import nftData from "../data/nftData"; // Import nftData.js
 
 function NFTs() {
+  const navigate = useNavigate(); // Initialize navigate hook
+
+  // Handler for navigating to NFTsDetailsPage
+  const handleCardClick = (item, type) => {
+    navigate(`/nfts/${item.id}`, { state: { item, type } });
+  };
+
   return (
     <div className="page mt-20">
       <main className="max-w-7xl mx-auto px-4 py-8">
         {/* NFT News Section */}
         <section className="mb-12">
           <div className="max-w-7xl mx-auto text-left">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">
               NFT News
             </h2>
             <p className="text-gray-600 text-lg leading-relaxed">
@@ -30,12 +38,13 @@ function NFTs() {
               {nftData.top_nft_stories.stories.slice(0, 1).map((story) => (
                 <div
                   key={story.id}
-                  className="relative rounded-lg overflow-hidden shadow-md h-full"
+                  className="relative rounded-lg overflow-hidden shadow-md h-full transition duration-300 ease-in-out transform hover:-translate-y-2 cursor-pointer"
+                  onClick={() => handleCardClick(story, "story")} // Add click handler
                 >
                   <img
                     src={story.image}
                     alt={story.headline}
-                    className="w-full h-[500px] object-cover"
+                    className="w-full h-[500px] object-cover-contain"
                     onError={(e) => (e.target.src = "https://via.placeholder.com/500x500")}
                   />
                   <div className="absolute top-2 left-2 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded">
@@ -53,13 +62,14 @@ function NFTs() {
               {nftData.top_nft_stories.stories.slice(1, 5).map((story) => (
                 <div
                   key={story.id}
-                  className="bg-white rounded-lg shadow-md flex flex-col overflow-hidden"
+                  className="bg-white rounded-lg shadow-md flex flex-col overflow-hidden transition duration-300 ease-in-out transform hover:-translate-y-2 cursor-pointer"
+                  onClick={() => handleCardClick(story, "story")} // Add click handler
                 >
                   <div className="relative w-full h-[calc(100%-64px)]">
                     <img
                       src={story.image}
                       alt={story.headline}
-                      className="w-full h-full object-cover rounded-lg"
+                      className="w-full h-full object-cover-contain rounded-lg"
                       onError={(e) => (e.target.src = "https://via.placeholder.com/500x500")}
                     />
                     <div className="absolute top-2 left-2 bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded">
@@ -84,14 +94,15 @@ function NFTs() {
             {nftData.latest_nft_news.articles.map((article) => (
               <div
                 key={article.id}
-                className="flex flex-col md:flex-row bg-white rounded-lg shadow-md overflow-hidden"
+                className="flex flex-col md:flex-row bg-white rounded-lg shadow-md overflow-hidden transition duration-300 ease-in-out transform hover:-translate-y-2 cursor-pointer"
+                onClick={() => handleCardClick(article, "article")} // Add click handler
               >
                 {/* Article Image */}
                 <div className="md:w-1/3">
                   <img
                     src={article.image}
                     alt={article.headline}
-                    className="w-full h-48 md:h-auto md:max-h-[180px] object-cover rounded-lg"
+                    className="w-full h-48 md:h-auto md:max-h-[180px] object-cover-contain rounded-lg"
                     onError={(e) => (e.target.src = "https://via.placeholder.com/500x500")}
                   />
                 </div>

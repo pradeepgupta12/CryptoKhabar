@@ -1,7 +1,8 @@
-
+  
 
 
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { LatestCasinoNews } from '../data/LatestCasinoNews';
 import { cryptoCurrencyNews } from '../data/cryptoCurrencyNews';
 import { newsPage } from '../data/newsPage';
@@ -17,10 +18,14 @@ function Home() {
     [
       ...LatestCasinoNews.articles.map(article => ({ ...article, section: 'casino' })),
       ...cryptoCurrencyNews.map(article => ({ ...article, section: 'currency' })),
-      ...topStories.map(article => ({ ...article, section: 'topStories' }))
+      ...partnerContent.map(article => ({ ...article, section: 'partner' })),
+      ...deepDive.map(article => ({ ...article, section: 'deepDive' })),
+      ...pressReleases.map(article => ({ ...article, section: 'press' })),
+      ...topStories.map(article => ({ ...article, section: 'topStories' })),
+      ...marketOutlook.map(article => ({ ...article, section: 'market' }))
     ].reduce((acc, article) => ({
       ...acc,
-      [`${article.section}-${article.id}`]: article.likes
+      [`${article.section}-${article.id}`]: article.likes || 0
     }), {})
   );
 
@@ -28,9 +33,28 @@ function Home() {
   const [showAllDeepDive, setShowAllDeepDive] = useState(false);
   const [showAllTopStories, setShowAllTopStories] = useState(false);
 
-  const showArticle = (articleId) => console.log(`Opening article: ${articleId}`);
-  const showComments = () => console.log('Comments feature coming soon!');
-  const shareArticle = () => {
+  const navigate = useNavigate();
+
+  const showArticle = (article) => {
+    switch (article.section) {
+      case 'casino': navigate('/latest-casino-news', { state: { article } }); break;
+      case 'currency': navigate('/latest-crypto-currency-news', { state: { article } }); break;
+      case 'partner': navigate('/partner-content', { state: { article } }); break;
+      case 'deepDive': navigate('/deep-dives', { state: { article } }); break;
+      case 'press': navigate('/press-release', { state: { article } }); break;
+      case 'topStories': navigate('/top-stories', { state: { article } }); break;
+      case 'market': navigate('/market-outlook', { state: { article } }); break;
+      default: navigate('/article', { state: { article } });
+    }
+  };
+
+  const showComments = (e) => {
+    e.stopPropagation();
+    console.log('Comments feature coming soon!');
+  };
+
+  const shareArticle = (e) => {
+    e.stopPropagation();
     if (navigator.share) {
       navigator.share({
         title: 'CryptoNews Article',
@@ -43,10 +67,14 @@ function Home() {
         .catch((err) => console.error('Clipboard copy failed:', err));
     }
   };
-  const likeArticle = (section, articleId) => {
+
+  const likeArticle = (section, articleId) => (e) => {
+    e.stopPropagation();
     setLikes((prev) => ({ ...prev, [`${section}-${articleId}`]: prev[`${section}-${articleId}`] + 1 }));
   };
+
   const searchTopic = (topic) => console.log(`Showing articles about: ${topic}`);
+
   const subscribeNewsletter = () => {
     const email = document.getElementById('newsletter-email')?.value;
     if (email) {
@@ -60,18 +88,17 @@ function Home() {
   return (
     <div className="w-full min-h-screen bg-gray-100 mt-20">
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* News Section */}
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Latest Crypto News</h2>
           <p className="text-gray-600 text-sm sm:text-base leading-relaxed">{newsPage.description}</p>
         </div>
-
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
           <div className="lg:col-span-2">
             {LatestCasinoNews.articles.slice(0, 1).map((article) => (
               <article
                 key={article.id}
                 className="bg-white rounded-lg shadow-lg overflow-hidden mb-6 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 cursor-pointer"
+                onClick={() => showArticle({ ...article, section: 'casino' })}
               >
                 <div className="relative">
                   <img
@@ -86,10 +113,7 @@ function Home() {
                   </div>
                 </div>
                 <div className="p-6">
-                  <h2
-                    className="text-2xl font-bold text-gray-900 mb-3 hover:text-blue-600 cursor-pointer line-clamp-1"
-                    onClick={() => showArticle(article.id)}
-                  >
+                  <h2 className="text-2xl font-bold text-gray-900 mb-3 hover:text-blue-600 cursor-pointer line-clamp-1">
                     {article.title}
                   </h2>
                   <p className="text-gray-600 mb-4 line-clamp-3">{article.description}</p>
@@ -107,7 +131,7 @@ function Home() {
                     </div>
                     <div className="flex items-center space-x-4">
                       <button
-                        onClick={() => likeArticle('casino', article.id)}
+                        onClick={likeArticle('casino', article.id)}
                         className="hover:text-blue-600 transition-colors flex items-center gap-1"
                       >
                         <FaThumbsUp /> {likes[`casino-${article.id}`]}
@@ -131,12 +155,12 @@ function Home() {
                 </div>
               </article>
             ))}
-
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
               {LatestCasinoNews.articles.slice(1).map((article) => (
                 <article
                   key={article.id}
                   className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col transition-all duration-300 hover:shadow-xl hover:-translate-y-2 cursor-pointer"
+                  onClick={() => showArticle({ ...article, section: 'casino' })}
                 >
                   <img
                     src={article.image.link}
@@ -144,17 +168,14 @@ function Home() {
                     className="w-full h-48 object-cover"
                   />
                   <div className="p-4 flex flex-col">
-                    <h3
-                      className="font-bold text-gray-900 mb-2 hover:text-blue-600 cursor-pointer line-clamp-1"
-                      onClick={() => showArticle(article.id)}
-                    >
+                    <h3 className="font-bold text-gray-900 mb-2 hover:text-blue-600 cursor-pointer line-clamp-1">
                       {article.title}
                     </h3>
                     <p className="text-gray-600 text-sm mb-2 line-clamp-3">{article.description}</p>
                     <div className="flex items-center justify-between text-xs text-gray-500 mt-2">
                       <span>{article.author} • {article.timePosted}</span>
                       <button
-                        onClick={() => likeArticle('casino', article.id)}
+                        onClick={likeArticle('casino', article.id)}
                         className="hover:text-blue-600 transition-colors flex items-center gap-1"
                       >
                         <FaThumbsUp /> {likes[`casino-${article.id}`]}
@@ -165,7 +186,6 @@ function Home() {
               ))}
             </div>
           </div>
-
           <div className="space-y-4">
             <div className="bg-white rounded-lg shadow-md p-6">
               <h3 className="text-lg font-bold text-gray-900 mb-4">Market Overview</h3>
@@ -197,7 +217,6 @@ function Home() {
                 View All Markets
               </a>
             </div>
-
             <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-6 text-white">
               <h3 className="text-lg font-bold mb-2">Stay Updated</h3>
               <p className="text-sm opacity-90 mb-4">Get the latest crypto news delivered to your inbox daily.</p>
@@ -216,7 +235,6 @@ function Home() {
                 </button>
               </div>
             </div>
-
             <div className="bg-white rounded-lg shadow-md p-6">
               <h3 className="text-lg font-bold text-gray-900 mb-4">Trending Topics</h3>
               <div className="space-y-2">
@@ -232,7 +250,6 @@ function Home() {
                 ))}
               </div>
             </div>
-
             <div className="bg-white rounded-lg shadow-md p-6">
               <h3 className="text-lg font-bold text-gray-900 mb-4">Fear & Greed Index</h3>
               <div className="text-center">
@@ -264,7 +281,6 @@ function Home() {
             </div>
           </div>
         </div>
-
         <div className="mt-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Latest Crypto Currency News</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-4">
@@ -272,6 +288,7 @@ function Home() {
               <article
                 key={article.id}
                 className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col transition-all duration-300 hover:shadow-xl hover:-translate-y-2 cursor-pointer"
+                onClick={() => showArticle({ ...article, section: 'currency' })}
               >
                 <img
                   src={article.image.link}
@@ -279,17 +296,14 @@ function Home() {
                   className="w-full h-48 object-cover"
                 />
                 <div className="p-4 flex flex-col">
-                  <h3
-                    className="font-bold text-gray-900 mb-2 hover:text-blue-600 cursor-pointer line-clamp-1"
-                    onClick={() => showArticle(article.id)}
-                  >
+                  <h3 className="font-bold text-gray-900 mb-2 hover:text-blue-600 cursor-pointer line-clamp-1">
                     {article.title}
                   </h3>
                   <p className="text-gray-600 text-sm mb-2 line-clamp-3">{article.description}</p>
                   <div className="flex items-center justify-between text-xs text-gray-500 mt-2">
                     <span>{article.author} • {article.timePosted}</span>
                     <button
-                      onClick={() => likeArticle('currency', article.id)}
+                      onClick={likeArticle('currency', article.id)}
                       className="hover:text-blue-600 transition-colors flex items-center gap-1"
                     >
                       <FaThumbsUp /> {likes[`currency-${article.id}`]}
@@ -308,8 +322,6 @@ function Home() {
             </button>
           </div>
         </div>
-
-        {/* Partner Content Section */}
         <div className="mt-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Partner Content</h2>
           <div className="overflow-x-auto scrollbar-hide">
@@ -328,7 +340,7 @@ function Home() {
                   key={article.id}
                   className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex-shrink-0"
                   style={{width: '200px'}}
-                  onClick={() => showArticle(article.id)}
+                  onClick={() => showArticle({ ...article, section: 'partner' })}
                 >
                   <div className="relative">
                     <img
@@ -352,14 +364,21 @@ function Home() {
                     <h3 className="font-medium text-gray-900 text-sm leading-tight line-clamp-2 hover:text-blue-600 transition-colors">
                       {article.title}
                     </h3>
+                    <div className="flex items-center justify-between text-xs text-gray-500 mt-2">
+                      <span>{article.author || 'Partner'}</span>
+                      <button
+                        onClick={likeArticle('partner', article.id)}
+                        className="hover:text-blue-600 transition-colors flex items-center gap-1"
+                      >
+                        <FaThumbsUp /> {likes[`partner-${article.id}`]}
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))}
             </div>
           </div>
         </div>
-
-        {/* Deep Dive Section */}
         <div className="mt-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Deep Dives</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-4">
@@ -367,6 +386,7 @@ function Home() {
               <article
                 key={article.id}
                 className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col transition-all duration-300 hover:shadow-xl hover:-translate-y-2 cursor-pointer"
+                onClick={() => showArticle({ ...article, section: 'deepDive' })}
               >
                 <img
                   src={article.image.link}
@@ -374,20 +394,17 @@ function Home() {
                   className="w-full h-48 object-cover"
                 />
                 <div className="p-4 flex flex-col">
-                  <h3
-                    className="font-bold text-gray-900 mb-2 hover:text-blue-600 cursor-pointer line-clamp-2"
-                    onClick={() => showArticle(article.id)}
-                  >
+                  <h3 className="font-bold text-gray-900 mb-2 hover:text-blue-600 cursor-pointer line-clamp-2">
                     {article.title}
                   </h3>
                   <p className="text-gray-600 text-sm mb-2 line-clamp-3">{article.content}</p>
                   <div className="flex items-center justify-between text-xs text-gray-500 mt-2">
                     <span>Deep Analysis</span>
                     <button
-                      onClick={() => showArticle(article.id)}
+                      onClick={likeArticle('deepDive', article.id)}
                       className="hover:text-blue-600 transition-colors flex items-center gap-1"
                     >
-                      <span>Read More</span>
+                      <FaThumbsUp /> {likes[`deepDive-${article.id}`]}
                     </button>
                   </div>
                 </div>
@@ -402,148 +419,159 @@ function Home() {
               {showAllDeepDive ? 'View Less' : 'View More'}
             </button>
           </div>
-          {/* Press Releases Section */}
-          <div className="mt-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Press Releases</h2>
-            <div className="overflow-x-auto scrollbar-hide">
-              <style jsx>{`
-                .scrollbar-hide {
-                  -ms-overflow-style: none;
-                  scrollbar-width: none;
-                }
-                .scrollbar-hide::-webkit-scrollbar {
-                  display: none;
-                }
-              `}</style>
-              <div className="flex gap-4 pb-4" style={{width: 'max-content'}}>
-                {pressReleases.map((article) => (
-                  <div
-                    key={article.id}
-                    className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex-shrink-0"
-                    style={{width: '200px'}}
-                    onClick={() => showArticle(article.id)}
-                  >
-                    <div className="relative">
-                      <img
-                        src={article.image}
-                        alt={article.title}
-                        className="w-full h-32 sm:h-36 object-cover rounded-lg"
-                      />
-                      <div className="absolute top-2 left-2">
-                        <span className="bg-blue-600 text-white px-2 py-1 rounded text-xs font-medium">
-                          PRESS RELEASE
-                        </span>
-                      </div>
-                      <div className="absolute bottom-2 right-2">
-                        <div className="bg-black bg-opacity-50 text-white px-1 py-0.5 rounded text-xs flex items-center">
-                          <span className="text-yellow-400 mr-1">●</span>
-                          crypto.news
-                        </div>
-                      </div>
+        </div>
+        <div className="mt-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">Press Releases</h2>
+          <div className="overflow-x-auto scrollbar-hide">
+            <style jsx>{`
+              .scrollbar-hide {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+              }
+              .scrollbar-hide::-webkit-scrollbar {
+                display: none;
+              }
+            `}</style>
+            <div className="flex gap-4 pb-4" style={{width: 'max-content'}}>
+              {pressReleases.map((article) => (
+                <div
+                  key={article.id}
+                  className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex-shrink-0"
+                  style={{width: '200px'}}
+                  onClick={() => showArticle({ ...article, section: 'press' })}
+                >
+                  <div className="relative">
+                    <img
+                      src={article.image}
+                      alt={article.title}
+                      className="w-full h-32 sm:h-36 object-cover rounded-lg"
+                    />
+                    <div className="absolute top-2 left-2">
+                      <span className="bg-blue-600 text-white px-2 py-1 rounded text-xs font-medium">
+                        PRESS RELEASE
+                      </span>
                     </div>
-                    <div className="p-3">
-                      <h3 className="font-medium text-gray-900 text-sm leading-tight line-clamp-2 hover:text-blue-600 transition-colors">
-                        {article.title}
-                      </h3>
+                    <div className="absolute bottom-2 right-2">
+                      <div className="bg-black bg-opacity-50 text-white px-1 py-0.5 rounded text-xs flex items-center">
+                        <span className="text-yellow-400 mr-1">●</span>
+                        crypto.news
+                      </div>
                     </div>
                   </div>
-                ))}
-              </div>
-            </div>
-          </div>
-          
-          {/* Top Stories Section */}
-          <div className="mt-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Top Stories</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-4">
-              {topStories.slice(0, showAllTopStories ? topStories.length : 3).map((article) => (
-                <article
-                  key={article.id}
-                  className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col transition-all duration-300 hover:shadow-xl hover:-translate-y-2 cursor-pointer"
-                >
-                  <img
-                    src={article.image.link}
-                    alt={article.title}
-                    className="w-full h-48 object-cover"
-                  />
-                  <div className="p-4 flex flex-col">
-                    <h3
-                      className="font-bold text-gray-900 mb-2 hover:text-blue-600 cursor-pointer line-clamp-1"
-                      onClick={() => showArticle(article.id)}
-                    >
+                  <div className="p-3">
+                    <h3 className="font-medium text-gray-900 text-sm leading-tight line-clamp-2 hover:text-blue-600 transition-colors">
                       {article.title}
                     </h3>
-                    <p className="text-gray-600 text-sm mb-2 line-clamp-3">{article.description}</p>
                     <div className="flex items-center justify-between text-xs text-gray-500 mt-2">
-                      <span>{article.author} • {article.timePosted}</span>
+                      <span>{article.author || 'Press'}</span>
                       <button
-                        onClick={() => likeArticle('topStories', article.id)}
+                        onClick={likeArticle('press', article.id)}
                         className="hover:text-blue-600 transition-colors flex items-center gap-1"
                       >
-                        <FaThumbsUp /> {likes[`topStories-${article.id}`]}
+                        <FaThumbsUp /> {likes[`press-${article.id}`]}
                       </button>
                     </div>
                   </div>
-                </article>
+                </div>
               ))}
             </div>
-            <div className="flex justify-start mb-8">
-              <button
-                onClick={() => setShowAllTopStories(!showAllTopStories)}
-                className="text-blue-600 hover:underline font-medium"
-              >
-                {showAllTopStories ? 'View Less' : 'View More'}
-              </button>
-            </div>
           </div>
-
-          {/* Market Outlook Section */}
-          <div className="mt-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Market Outlook</h2>
-            <div className="overflow-x-auto scrollbar-hide">
-              <style jsx>{`
-                .scrollbar-hide {
-                  -ms-overflow-style: none;
-                  scrollbar-width: none;
-                }
-                .scrollbar-hide::-webkit-scrollbar {
-                  display: none;
-                }
-              `}</style>
-              <div className="flex gap-4 pb-4" style={{width: 'max-content'}}>
-                {marketOutlook.map((article) => (
-                  <div
-                    key={article.id}
-                    className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex-shrink-0"
-                    style={{width: '200px'}}
-                    onClick={() => showArticle(article.id)}
-                  >
-                    <div className="relative">
-                      <img
-                        src={article.image}
-                        alt={article.title}
-                        className="w-full h-32 sm:h-36 object-cover rounded-lg"
-                      />
-                      <div className="absolute top-2 left-2">
-                        <span className="bg-blue-600 text-white px-2 py-1 rounded text-xs font-medium">
-                          MARKETS
-                        </span>
-                      </div>
-                      <div className="absolute bottom-2 right-2">
-                        <div className="bg-black bg-opacity-50 text-white px-1 py-0.5 rounded text-xs flex items-center">
-                          <span className="text-yellow-400 mr-1">●</span>
-                          crypto.news
-                        </div>
-                      </div>
+        </div>
+        <div className="mt-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Top Stories</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-4">
+            {topStories.slice(0, showAllTopStories ? topStories.length : 3).map((article) => (
+              <article
+                key={article.id}
+                className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col transition-all duration-300 hover:shadow-xl hover:-translate-y-2 cursor-pointer"
+                onClick={() => showArticle({ ...article, section: 'topStories' })}
+              >
+                <img
+                  src={article.image.link}
+                  alt={article.title}
+                  className="w-full h-48 object-cover"
+                />
+                <div className="p-4 flex flex-col">
+                  <h3 className="font-bold text-gray-900 mb-2 hover:text-blue-600 cursor-pointer line-clamp-1">
+                    {article.title}
+                  </h3>
+                  <p className="text-gray-600 text-sm mb-2 line-clamp-3">{article.description}</p>
+                  <div className="flex items-center justify-between text-xs text-gray-500 mt-2">
+                    <span>{article.author} • {article.timePosted}</span>
+                    <button
+                      onClick={likeArticle('topStories', article.id)}
+                      className="hover:text-blue-600 transition-colors flex items-center gap-1"
+                    >
+                      <FaThumbsUp /> {likes[`topStories-${article.id}`]}
+                    </button>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+          <div className="flex justify-start mb-8">
+            <button
+              onClick={() => setShowAllTopStories(!showAllTopStories)}
+              className="text-blue-600 hover:underline font-medium"
+            >
+              {showAllTopStories ? 'View Less' : 'View More'}
+            </button>
+          </div>
+        </div>
+        <div className="mt-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">Market Outlook</h2>
+          <div className="overflow-x-auto scrollbar-hide">
+            <style jsx>{`
+              .scrollbar-hide {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+              }
+              .scrollbar-hide::-webkit-scrollbar {
+                display: none;
+              }
+            `}</style>
+            <div className="flex gap-4 pb-4" style={{width: 'max-content'}}>
+              {marketOutlook.map((article) => (
+                <div
+                  key={article.id}
+                  className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex-shrink-0"
+                  style={{width: '200px'}}
+                  onClick={() => showArticle({ ...article, section: 'market' })}
+                >
+                  <div className="relative">
+                    <img
+                      src={article.image}
+                      alt={article.title}
+                      className="w-full h-32 sm:h-36 object-cover rounded-lg"
+                    />
+                    <div className="absolute top-2 left-2">
+                      <span className="bg-blue-600 text-white px-2 py-1 rounded text-xs font-medium">
+                        MARKETS
+                      </span>
                     </div>
-                    <div className="p-3">
-                      <h3 className="font-medium text-gray-900 text-sm leading-tight line-clamp-2 hover:text-blue-600 transition-colors">
-                        {article.title}
-                      </h3>
+                    <div className="absolute bottom-2 right-2">
+                      <div className="bg-black bg-opacity-50 text-white px-1 py-0.5 rounded text-xs flex items-center">
+                        <span className="text-yellow-400 mr-1">●</span>
+                        crypto.news
+                      </div>
                     </div>
                   </div>
-                ))}
-              </div>
+                  <div className="p-3">
+                    <h3 className="font-medium text-gray-900 text-sm leading-tight line-clamp-2 hover:text-blue-600 transition-colors">
+                      {article.title}
+                    </h3>
+                    <div className="flex items-center justify-between text-xs text-gray-500 mt-2">
+                      <span>{article.author || 'Market'}</span>
+                      <button
+                        onClick={likeArticle('market', article.id)}
+                        className="hover:text-blue-600 transition-colors flex items-center gap-1"
+                      >
+                        <FaThumbsUp /> {likes[`market-${article.id}`]}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -553,3 +581,5 @@ function Home() {
 }
 
 export default Home;
+
+

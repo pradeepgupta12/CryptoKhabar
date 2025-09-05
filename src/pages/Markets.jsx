@@ -1,106 +1,156 @@
-import { useState } from 'react';
+
+
+
+
+import { useState, useEffect } from 'react';
+import { marketStats, topCryptos } from '../data/marketStats'; // Adjust path to your marketStats.js file
 
 function Markets() {
+  const [dynamicStats, setDynamicStats] = useState(marketStats);
+  const [dynamicCryptos, setDynamicCryptos] = useState(topCryptos);
+
+  // Function to simulate real-time market fluctuations
+  const simulateMarketChanges = () => {
+    // Simulate changes for marketStats
+    const updatedStats = dynamicStats.map((stat) => {
+      let newValue = stat.value;
+      let newChange = stat.change;
+      if (stat.label === 'Total Market Cap' || stat.label === '24h Volume') {
+        const valueNum = parseFloat(stat.value.replace(/[TBM$]/g, '')) * (stat.value.includes('T') ? 1e12 : 1e9);
+        const fluctuation = (Math.random() - 0.5) * 0.05; // +/- 5% change
+        const newValueNum = valueNum * (1 + fluctuation);
+        newValue = stat.label === 'Total Market Cap'
+          ? `$${Math.round(newValueNum / 1e12 * 10) / 10}T`
+          : `$${Math.round(newValueNum / 1e9 * 10) / 10}B`;
+        newChange = `${(fluctuation * 100).toFixed(1)}%`;
+      } else if (stat.label === 'BTC Dominance') {
+        const valueNum = parseFloat(stat.value.replace('%', ''));
+        const fluctuation = (Math.random() - 0.5) * 2; // +/- 2% change
+        newValue = `${Math.round((valueNum + fluctuation) * 10) / 10}%`;
+        newChange = `${fluctuation.toFixed(1)}%`;
+      } else if (stat.label === 'Active Coins') {
+        const valueNum = parseInt(stat.value.replace(/,/g, ''));
+        const fluctuation = Math.round((Math.random() - 0.5) * 10); // +/- 10 coins
+        newValue = (valueNum + fluctuation).toLocaleString();
+        newChange = fluctuation >= 0 ? `+${fluctuation} new` : `${fluctuation} new`;
+      }
+      return {
+        ...stat,
+        value: newValue,
+        change: newChange,
+        trend: newChange.startsWith('-') ? 'price-down' : 'price-up',
+      };
+    });
+
+    // Simulate changes for topCryptos
+    const updatedCryptos = dynamicCryptos.map((crypto) => {
+      const priceNum = parseFloat(crypto.price.replace(/[$,]/g, ''));
+      const marketCapNum = parseFloat(crypto.marketCap.replace(/[BM$]/g, '')) * (crypto.marketCap.includes('B') ? 1e9 : 1e6);
+      const volumeNum = parseFloat(crypto.volume.replace(/[BM$]/g, '')) * (crypto.volume.includes('B') ? 1e9 : 1e6);
+      const fluctuation = (Math.random() - 0.5) * 0.05; // +/- 5% change
+      const newPrice = priceNum * (1 + fluctuation);
+      const newMarketCap = marketCapNum * (1 + fluctuation);
+      const newVolume = volumeNum * (1 + fluctuation);
+      return {
+        ...crypto,
+        price: `$${Math.round(newPrice).toLocaleString()}`,
+        change: `${(fluctuation * 100).toFixed(1)}%`,
+        marketCap: newMarketCap >= 1e9
+          ? `$${Math.round(newMarketCap / 1e9 * 10) / 10}B`
+          : `$${Math.round(newMarketCap / 1e6 * 10) / 10}M`,
+        volume: newVolume >= 1e9
+          ? `$${Math.round(newVolume / 1e9 * 10) / 10}B`
+          : `$${Math.round(newVolume / 1e6 * 10) / 10}M`,
+        trend: fluctuation >= 0 ? 'price-up' : 'price-down',
+      };
+    });
+
+    setDynamicStats(updatedStats);
+    setDynamicCryptos(updatedCryptos);
+  };
+
+  // Simulate real-time updates every 30 seconds
+  useEffect(() => {
+    simulateMarketChanges(); // Initial update
+    const interval = setInterval(simulateMarketChanges, 30000); // Update every 30 seconds
+    return () => clearInterval(interval); // Cleanup on unmount
+  }, []);
+
   return (
     <div className="page mt-20">
-      <main className=" max-w-7xl mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Cryptocurrency Markets</h1>
-          <p className="text-gray-600">Real-time prices, market cap, and trading data for all cryptocurrencies</p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-lg shadow-md p-6 text-center">
-            <div className="text-2xl font-bold text-blue-600">$1.8T</div>
-            <div className="text-sm text-gray-500">Total Market Cap</div>
-            <div className="text-xs price-up mt-1">+2.4%</div>
+      <main className="max-w-7xl mx-auto px-4 py-8">
+        {dynamicStats.length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            {dynamicStats.map((stat, index) => (
+              <div key={index} className="bg-white rounded-lg shadow-md p-6 text-center">
+                {stat.value && (
+                  <div className={`text-2xl font-bold ${stat.color}`}>
+                    {stat.value}
+                  </div>
+                )}
+                {stat.label && (
+                  <div className="text-sm text-gray-500">
+                    {stat.label}
+                  </div>
+                )}
+                {stat.change && (
+                  <div className={`text-xs ${stat.trend} mt-1`}>
+                    {stat.change}
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
-          <div className="bg-white rounded-lg shadow-md p-6 text-center">
-            <div className="text-2xl font-bold text-green-600">$89B</div>
-            <div className="text-sm text-gray-500">24h Volume</div>
-            <div className="text-xs price-up mt-1">+8.1%</div>
+        )}
+        {dynamicCryptos.length > 0 && (
+          <div className="bg-white rounded-lg shadow-md overflow-hidden">
+            <div className="p-6 border-b border-gray-200">
+              <h2 className="text-xl font-bold">Top Cryptocurrencies</h2>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">#</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">24h %</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Market Cap</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Volume</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                  {dynamicCryptos.map((crypto) => (
+                    <tr key={crypto.rank} className="hover:bg-gray-50">
+                      {crypto.rank && <td className="px-6 py-4 text-sm">{crypto.rank}</td>}
+                      {(crypto.name || crypto.symbol || crypto.logo) && (
+                        <td className="px-6 py-4">
+                          <div className="flex items-center space-x-3">
+                            {crypto.logo && (
+                              <div className={`w-8 h-8 ${crypto.bgColor} rounded-full flex items-center justify-center text-white text-xs font-bold`}>
+                                {crypto.logo}
+                              </div>
+                            )}
+                            {(crypto.name || crypto.symbol) && (
+                              <div>
+                                {crypto.name && <div className="font-medium">{crypto.name}</div>}
+                                {crypto.symbol && <div className="text-sm text-gray-500">{crypto.symbol}</div>}
+                              </div>
+                            )}
+                          </div>
+                        </td>
+                      )}
+                      {crypto.price && <td className="px-6 py-4 font-medium">{crypto.price}</td>}
+                      {crypto.change && <td className="px-6 py-4 ${crypto.trend}">{crypto.change}</td>}
+                      {crypto.marketCap && <td className="px-6 py-4">{crypto.marketCap}</td>}
+                      {crypto.volume && <td className="px-6 py-4">{crypto.volume}</td>}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
-          <div className="bg-white rounded-lg shadow-md p-6 text-center">
-            <div className="text-2xl font-bold text-purple-600">52%</div>
-            <div className="text-sm text-gray-500">BTC Dominance</div>
-            <div className="text-xs price-down mt-1">-0.3%</div>
-          </div>
-          <div className="bg-white rounded-lg shadow-md p-6 text-center">
-            <div className="text-2xl font-bold text-orange-600">2,847</div>
-            <div className="text-sm text-gray-500">Active Coins</div>
-            <div className="text-xs text-gray-500 mt-1">+12 new</div>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-lg shadow-md overflow-hidden">
-          <div className="p-6 border-b border-gray-200">
-            <h2 className="text-xl font-bold">Top Cryptocurrencies</h2>
-          </div>
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">#</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">24h %</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Market Cap</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Volume</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200">
-                <tr className="hover:bg-gray-50">
-                  <td className="px-6 py-4 text-sm">1</td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center text-white text-xs font-bold">₿</div>
-                      <div>
-                        <div className="font-medium">Bitcoin</div>
-                        <div className="text-sm text-gray-500">BTC</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 font-medium">$43,250</td>
-                  <td className="px-6 py-4 price-up">+2.5%</td>
-                  <td className="px-6 py-4">$847.2B</td>
-                  <td className="px-6 py-4">$28.4B</td>
-                </tr>
-                <tr className="hover:bg-gray-50">
-                  <td className="px-6 py-4 text-sm">2</td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs font-bold">Ξ</div>
-                      <div>
-                        <div className="font-medium">Ethereum</div>
-                        <div className="text-sm text-gray-500">ETH</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 font-medium">$2,580</td>
-                  <td className="px-6 py-4 price-up">+1.8%</td>
-                  <td className="px-6 py-4">$310.4B</td>
-                  <td className="px-6 py-4">$15.2B</td>
-                </tr>
-                <tr className="hover:bg-gray-50">
-                  <td className="px-6 py-4 text-sm">3</td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center text-white text-xs font-bold">B</div>
-                      <div>
-                        <div className="font-medium">Binance Coin</div>
-                        <div className="text-sm text-gray-500">BNB</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 font-medium">$315</td>
-                  <td className="px-6 py-4 price-down">-0.5%</td>
-                  <td className="px-6 py-4">$48.2B</td>
-                  <td className="px-6 py-4">$2.1B</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+        )}
       </main>
     </div>
   );
