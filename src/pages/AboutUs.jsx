@@ -1,9 +1,12 @@
 
 
 
+
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Mail, Phone, MapPin, Users, Target, Eye, Heart, Twitter, Linkedin, Facebook, ArrowRight, Star, Award, TrendingUp, Shield } from 'lucide-react';
 import aboutUsData from "../data/aboutUsData";
+
 
 function AboutUs() {
   const [expandedCards, setExpandedCards] = useState({});
@@ -23,6 +26,32 @@ function AboutUs() {
 
   return (
     <div className="w-full min-h-screen bg-gray-50 mt-20">
+      {/* SEO Metadata */}
+      <Helmet>
+        <title>About Crypto Khabar - Your Trusted Cryptocurrency News Source</title>
+        <meta
+          name="description"
+          content="Learn about Crypto Khabar, your trusted source for cryptocurrency news, market analysis, and insights. Discover our mission, vision, and team."
+        />
+        <link rel="canonical" href="https://cryptookhabar.netlify.app/about/" />
+        <script type="application/ld+json">
+          {`
+            {
+              "@context": "https://schema.org",
+              "@type": "AboutPage",
+              "name": "About Crypto Khabar",
+              "url": "https://cryptookhabar.netlify.app/about/",
+              "description": "${aboutUsData.company.description || 'Learn about Crypto Khabar, your trusted source for cryptocurrency news, market analysis, and insights.'}",
+              "publisher": {
+                "@type": "Organization",
+                "name": "Crypto Khabar",
+                "url": "https://cryptookhabar.netlify.app/"
+              }
+            }
+          `}
+        </script>
+      </Helmet>
+
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-blue-600 via-purple-600 to-blue-800 text-white">
         <div className="absolute inset-0 bg-black/20"></div>
@@ -110,7 +139,6 @@ function AboutUs() {
           <div className="grid lg:grid-cols-2 gap-8 items-start">
             {aboutUsData.whatWeDo.map((service, index) => {
               const isExpanded = expandedCards[index] || false;
-              // const isLongContent = service.description.length > 100;
               return (
                 <div
                   key={index}
@@ -172,7 +200,8 @@ function AboutUs() {
                   <div className="w-32 h-32 mx-auto rounded-full overflow-hidden ring-4 ring-white shadow-xl group-hover:ring-blue-200 transition-all">
                     <img
                       src={member.image}
-                      alt={member.name}
+                      alt={`Profile image of ${member.name}, ${member.role} at Crypto Khabar`}
+                      loading="lazy"
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                     />
                   </div>

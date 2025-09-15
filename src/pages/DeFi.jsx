@@ -1,7 +1,9 @@
 
 
 
+
 import React from "react";
+import { Helmet } from 'react-helmet-async';
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import defiData from "../data/defiData"; // Import defiData.js
 
@@ -13,8 +15,58 @@ function DeFi() {
     navigate(`/defi/${item.id}`, { state: { item, type } });
   };
 
+  // Structured data for top stories and articles
+  const newsArticlesSchema = [
+    ...defiData.top_defi_stories.stories.map((story) => ({
+      "@context": "https://schema.org",
+      "@type": "NewsArticle",
+      "headline": story.headline || "DeFi News Story",
+      "image": story.image || "https://via.placeholder.com/500x500",
+      "datePublished": story.date || "2025-09-11",
+      "author": {
+        "@type": "Organization",
+        "name": "Crypto Khabar"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Crypto Khabar",
+        "url": "https://cryptookhabar.netlify.app/"
+      }
+    })),
+    ...defiData.latest_defi_news.articles.map((article) => ({
+      "@context": "https://schema.org",
+      "@type": "NewsArticle",
+      "headline": article.headline || "DeFi News Article",
+      "image": article.image || "https://via.placeholder.com/500x500",
+      "datePublished": article.date || "2025-09-11",
+      "description": article.summary || "DeFi market update and insights.",
+      "author": {
+        "@type": "Organization",
+        "name": "Crypto Khabar"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Crypto Khabar",
+        "url": "https://cryptookhabar.netlify.app/"
+      }
+    }))
+  ];
+
   return (
     <div className="page mt-20">
+      {/* SEO Metadata */}
+      <Helmet>
+        <title>DeFi News - Crypto Khabar</title>
+        <meta
+          name="description"
+          content={defiData.defi_news.description || "Explore the latest DeFi news, trends, and updates at Crypto Khabar."}
+        />
+        <link rel="canonical" href="https://cryptookhabar.netlify.app/defi/" />
+        <script type="application/ld+json">
+          {JSON.stringify(newsArticlesSchema)}
+        </script>
+      </Helmet>
+
       <main className="max-w-7xl mx-auto px-4 py-8">
         {/* DeFi News Section */}
         <section className="mb-12">
@@ -40,15 +92,14 @@ function DeFi() {
                 <div
                   key={story.id}
                   className="relative rounded-lg overflow-hidden shadow-md h-full transition duration-300 ease-in-out transform hover:-translate-y-2 cursor-pointer"
-                  onClick={() => handleCardClick(story, "story")} // Add click handler
+                  onClick={() => handleCardClick(story, "story")}
                 >
                   <img
                     src={story.image}
-                    alt={story.headline}
+                    alt={`Featured image for ${story.headline} in DeFi news`}
                     className="w-full h-[500px] object-cover-contain"
-                    onError={(e) =>
-                      (e.target.src = "https://via.placeholder.com/500x500")
-                    }
+                    loading="lazy"
+                    onError={(e) => (e.target.src = "https://via.placeholder.com/500x500")}
                   />
                   <div className="absolute top-2 left-2 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded">
                     {story.tag}
@@ -66,16 +117,15 @@ function DeFi() {
                 <div
                   key={story.id}
                   className="bg-white rounded-lg shadow-md flex flex-col overflow-hidden transition duration-300 ease-in-out transform hover:-translate-y-2 cursor-pointer"
-                  onClick={() => handleCardClick(story, "story")} // Add click handler
+                  onClick={() => handleCardClick(story, "story")}
                 >
                   <div className="relative w-full h-[calc(100%-64px)]">
                     <img
                       src={story.image}
-                      alt={story.headline}
+                      alt={`Image for ${story.headline} in DeFi news`}
                       className="w-full h-full object-cover-contain rounded-lg"
-                      onError={(e) =>
-                        (e.target.src = "https://via.placeholder.com/500x500")
-                      }
+                      loading="lazy"
+                      onError={(e) => (e.target.src = "https://via.placeholder.com/500x500")}
                     />
                     <div className="absolute top-2 left-2 bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded">
                       {story.tag}
@@ -102,17 +152,16 @@ function DeFi() {
               <div
                 key={article.id}
                 className="flex flex-col md:flex-row bg-white rounded-lg shadow-md overflow-hidden transition duration-300 ease-in-out transform hover:-translate-y-2 cursor-pointer"
-                onClick={() => handleCardClick(article, "article")} // Add click handler
+                onClick={() => handleCardClick(article, "article")}
               >
                 {/* Article Image */}
                 <div className="md:w-1/3">
                   <img
                     src={article.image}
-                    alt={article.headline}
+                    alt={`Image for ${article.headline} in DeFi news`}
                     className="w-full h-48 md:h-auto md:max-h-[180px] object-cover-contain rounded-lg"
-                    onError={(e) =>
-                      (e.target.src = "https://via.placeholder.com/500x500")
-                    }
+                    loading="lazy"
+                    onError={(e) => (e.target.src = "https://via.placeholder.com/500x500")}
                   />
                 </div>
                 {/* Article Content */}

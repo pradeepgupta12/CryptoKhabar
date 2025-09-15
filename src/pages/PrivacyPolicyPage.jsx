@@ -1,4 +1,8 @@
+
+
+
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { ChevronDown, ChevronUp, Shield, Mail, Phone, MapPin, Eye, Edit, Trash2, Download, UserCheck } from 'lucide-react';
 import { privacyPolicy } from '../data/privacyPolicy';
 
@@ -14,6 +18,37 @@ const PrivacyPolicyPage = () => {
 
   const { privacy_policy } = privacyPolicy;
 
+  // Structured data for the Privacy Policy page
+  const webpageSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Privacy Policy - Crypto Khabar",
+    "description": "Learn how Crypto Khabar collects, uses, shares, and protects your personal and non-personal information, including details on data collection, usage, sharing, storage, user rights, compliance, and contact information.",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Crypto Khabar",
+      "url": "https://cryptookhabar.netlify.app/"
+    },
+    "mainEntity": {
+      "@type": "CreativeWork",
+      "name": "Crypto Khabar Privacy Policy",
+      "version": privacy_policy.version,
+      "dateModified": privacy_policy.last_updated || '2025-09-11',
+      "publisher": {
+        "@type": "Organization",
+        "name": privacy_policy.company.name,
+        "contactPoint": [
+          {
+            "@type": "ContactPoint",
+            "email": privacy_policy.company.contact.email,
+            "telephone": privacy_policy.company.contact.phone,
+            "address": privacy_policy.company.contact.address
+          }
+        ]
+      }
+    }
+  };
+
   const getRightIcon = (right) => {
     switch(right) {
       case 'access': return <Eye className="w-5 h-5" />;
@@ -26,6 +61,19 @@ const PrivacyPolicyPage = () => {
 
   return (
     <div className="min-h-screen bg-white mt-20">
+      {/* SEO Metadata */}
+      <Helmet>
+        <title>Privacy Policy - Crypto Khabar</title>
+        <meta
+          name="description"
+          content="Learn how Crypto Khabar collects, uses, shares, and protects your personal and non-personal information, including details on data collection, usage, sharing, storage, user rights, compliance, and contact information."
+        />
+        <link rel="canonical" href="https://cryptookhabar.netlify.app/privacy-policy/" />
+        <script type="application/ld+json">
+          {JSON.stringify(webpageSchema)}
+        </script>
+      </Helmet>
+
       {/* Header */}
       <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white">
         <div className="container mx-auto px-4 py-16 max-w-6xl">

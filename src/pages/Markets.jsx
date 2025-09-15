@@ -1,13 +1,52 @@
 
 
-
-
 import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { marketStats, topCryptos } from '../data/marketStats'; // Adjust path to your marketStats.js file
 
 function Markets() {
   const [dynamicStats, setDynamicStats] = useState(marketStats);
   const [dynamicCryptos, setDynamicCryptos] = useState(topCryptos);
+
+  // Structured data for market stats and top cryptocurrencies
+  const datasetSchema = {
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    "name": "Cryptocurrency Market Statistics",
+    "description": "Real-time cryptocurrency market statistics including total market cap, 24h volume, BTC dominance, active coins, and top cryptocurrencies by market cap and volume.",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Crypto Khabar",
+      "url": "https://cryptookhabar.netlify.app/"
+    },
+    "dataset": [
+      {
+        "@type": "Dataset",
+        "name": "Market Statistics",
+        "description": "Key market statistics including total market cap, 24h volume, BTC dominance, and active coins.",
+        "data": dynamicStats.map((stat) => ({
+          "@type": "DataRecord",
+          "name": stat.label,
+          "value": stat.value,
+          "change": stat.change
+        }))
+      },
+      {
+        "@type": "Dataset",
+        "name": "Top Cryptocurrencies",
+        "description": "Top cryptocurrencies by market cap, including price, 24h change, and trading volume.",
+        "data": dynamicCryptos.map((crypto) => ({
+          "@type": "DataRecord",
+          "name": crypto.name,
+          "symbol": crypto.symbol,
+          "price": crypto.price,
+          "change": crypto.change,
+          "marketCap": crypto.marketCap,
+          "volume": crypto.volume
+        }))
+      }
+    ]
+  };
 
   // Function to simulate real-time market fluctuations
   const simulateMarketChanges = () => {
@@ -78,6 +117,19 @@ function Markets() {
 
   return (
     <div className="page mt-20">
+      {/* SEO Metadata */}
+      <Helmet>
+        <title>Cryptocurrency Market Stats - Crypto Khabar</title>
+        <meta
+          name="description"
+          content="Explore real-time cryptocurrency market statistics, including total market cap, 24h trading volume, BTC dominance, and top cryptocurrencies by market cap and volume on Crypto Khabar."
+        />
+        <link rel="canonical" href="https://cryptookhabar.netlify.app/markets/" />
+        <script type="application/ld+json">
+          {JSON.stringify(datasetSchema)}
+        </script>
+      </Helmet>
+
       <main className="max-w-7xl mx-auto px-4 py-8">
         {dynamicStats.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
@@ -128,7 +180,12 @@ function Markets() {
                           <div className="flex items-center space-x-3">
                             {crypto.logo && (
                               <div className={`w-8 h-8 ${crypto.bgColor} rounded-full flex items-center justify-center text-white text-xs font-bold`}>
-                                {crypto.logo}
+                                <img
+                                  src={crypto.logo}
+                                  alt={`Logo for ${crypto.name || crypto.symbol} cryptocurrency`}
+                                  className="w-full h-full object-cover rounded-full"
+                                  loading="lazy"
+                                />
                               </div>
                             )}
                             {(crypto.name || crypto.symbol) && (

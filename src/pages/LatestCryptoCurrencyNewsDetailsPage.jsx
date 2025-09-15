@@ -1,6 +1,9 @@
 
 
+
+
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { FaThumbsUp, FaComment, FaShare } from 'react-icons/fa';
 import { cryptoCurrencyNews } from '../data/cryptoCurrencyNews'; // Adjust path to your cryptoCurrencyNews.js file
 import { useEffect } from 'react';
@@ -15,6 +18,25 @@ function LatestCryptoCurrencyNewsDetailsPage() {
 
   // Use the article from state, or fallback to the first crypto currency news item
   const article = state?.article || cryptoCurrencyNews[0] || {};
+
+  // Structured data for the article
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    "headline": article.title || 'Untitled Crypto News',
+    "image": article.image?.link || 'https://cdn6.aptoide.com/imgs/d/c/0/dc0a14a0bf284ec5163f994ca863886e_fgraphic.png',
+    "datePublished": article.timePosted || '2025-09-11',
+    "description": article.description || 'Latest cryptocurrency news and updates.',
+    "author": {
+      "@type": "Person",
+      "name": article.author || 'Unknown Author'
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Crypto Khabar",
+      "url": "https://cryptookhabar.netlify.app/"
+    }
+  };
 
   // Ensure page loads at top on navigation
   useEffect(() => {
@@ -58,6 +80,19 @@ function LatestCryptoCurrencyNewsDetailsPage() {
 
   return (
     <div className="w-full min-h-screen bg-gray-100 pt-12 p-4 mt-8">
+      {/* SEO Metadata */}
+      <Helmet>
+        <title>{`${article.title || 'Crypto News'} - Crypto Khabar`}</title>
+        <meta
+          name="description"
+          content={article.description || `Read the latest cryptocurrency news: ${article.title || 'Crypto News'} on Crypto Khabar.`}
+        />
+        <link rel="canonical" href={`https://cryptookhabar.netlify.app/latest-crypto-currency-news/${article.id}`} />
+        <script type="application/ld+json">
+          {JSON.stringify(articleSchema)}
+        </script>
+      </Helmet>
+
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2">
@@ -65,8 +100,9 @@ function LatestCryptoCurrencyNewsDetailsPage() {
               <div className="relative">
                 <img
                   src={article.image?.link || 'https://cdn6.aptoide.com/imgs/d/c/0/dc0a14a0bf284ec5163f994ca863886e_fgraphic.png'}
-                  alt={article.title || 'Crypto News Image'}
+                  alt={`Featured image for ${article.title || 'Crypto News'} in cryptocurrency news`}
                   className="w-full h-64 sm:h-80 md:h-96 object-cover-contain rounded-t-lg"
+                  loading="lazy"
                 />
                 {article.category && (
                   <div className="absolute top-4 left-4">
@@ -133,8 +169,9 @@ function LatestCryptoCurrencyNewsDetailsPage() {
                   <a href="https://example.com/crypto-ad-1" target="_blank" rel="noopener noreferrer">
                     <img
                       src="https://images.unsplash.com/photo-1621416950685-56b5d4c0b8a6"
-                      alt="Crypto Ad 1"
+                      alt="Advertisement for cryptocurrency services"
                       className="w-full h-48 sm:h-64 md:h-56 object-cover rounded-lg cursor-pointer"
+                      loading="lazy"
                     />
                   </a>
                 </div>
@@ -145,8 +182,9 @@ function LatestCryptoCurrencyNewsDetailsPage() {
                   <a href="https://example.com/crypto-ad-2" target="_blank" rel="noopener noreferrer">
                     <img
                       src="https://images.unsplash.com/photo-1549421263-5ec394a5adf3"
-                      alt="Crypto Ad 2"
+                      alt="Advertisement for cryptocurrency trading"
                       className="w-full h-48 sm:h-64 md:h-56 object-cover rounded-lg cursor-pointer"
+                      loading="lazy"
                     />
                   </a>
                 </div>
@@ -168,8 +206,9 @@ function LatestCryptoCurrencyNewsDetailsPage() {
                 >
                   <img
                     src={story.image?.link || 'https://cdn6.aptoide.com/imgs/d/c/0/dc0a14a0bf284ec5163f994ca863886e_fgraphic.png'}
-                    alt={story.title}
+                    alt={`Image for ${story.title || 'Related Crypto News'} in cryptocurrency news`}
                     className="w-full h-48 object-cover-contain"
+                    loading="lazy"
                   />
                   <div className="p-4 flex flex-col">
                     <h3 className="font-bold text-gray-900 mb-2 hover:text-blue-600 cursor-pointer line-clamp-1">

@@ -1,6 +1,6 @@
 
-
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { FaThumbsUp, FaComment, FaShare } from 'react-icons/fa';
 import { pressReleases } from '../data/pressReleases'; // Adjust path to your pressReleases.js file
 import { useEffect } from 'react';
@@ -20,6 +20,25 @@ function PressReleaseDetailsPage() {
 
   // Use the article from state, or fallback to the first press release
   const article = state?.article || pressReleases[0] || {};
+
+  // Structured data for the press release article
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    "headline": article.title || 'Untitled Press Release',
+    "image": article.image || 'https://images.unsplash.com/photo-1621416950685-56b5d4c0b8a6',
+    "datePublished": article.date || '2025-09-11',
+    "description": article.fullDescription || article.shortDescription || 'No description available.',
+    "author": {
+      "@type": "Person",
+      "name": article.author || 'Unknown Author'
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Crypto Khabar",
+      "url": "https://cryptookhabar.netlify.app/"
+    }
+  };
 
   const shareArticle = (e) => {
     e.stopPropagation();
@@ -54,6 +73,19 @@ function PressReleaseDetailsPage() {
 
   return (
     <div className="w-full min-h-screen bg-gray-100 pt-12 p-4 mt-8">
+      {/* SEO Metadata */}
+      <Helmet>
+        <title>{`${article.title || 'Press Release'} - Crypto Khabar`}</title>
+        <meta
+          name="description"
+          content={article.fullDescription || article.shortDescription || `Read the latest press release: ${article.title || 'Press Release'} on Crypto Khabar.`}
+        />
+        <link rel="canonical" href={`https://cryptookhabar.netlify.app/press-releases/${article.id}`} />
+        <script type="application/ld+json">
+          {JSON.stringify(articleSchema)}
+        </script>
+      </Helmet>
+
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2">
@@ -61,8 +93,9 @@ function PressReleaseDetailsPage() {
               <div className="relative">
                 <img
                   src={article.image || 'https://images.unsplash.com/photo-1621416950685-56b5d4c0b8a6'}
-                  alt={article.title || 'Press Release Image'}
+                  alt={`Featured image for ${article.title || 'Press Release'} in press releases`}
                   className="w-full h-64 sm:h-80 md:h-96 object-cover-contain rounded-t-lg"
+                  loading="lazy"
                 />
                 <div className="absolute top-4 left-4">
                   <span className="bg-blue-600 text-white px-2 py-1 rounded text-xs font-medium">
@@ -129,8 +162,9 @@ function PressReleaseDetailsPage() {
                   <a href="https://example.com/crypto-ad-1" target="_blank" rel="noopener noreferrer">
                     <img
                       src="https://images.unsplash.com/photo-1621416950685-56b5d4c0b8a6"
-                      alt="Crypto Ad 1"
+                      alt="Advertisement for cryptocurrency services"
                       className="w-full h-48 sm:h-64 md:h-56 object-cover rounded-lg cursor-pointer"
+                      loading="lazy"
                     />
                   </a>
                 </div>
@@ -141,8 +175,9 @@ function PressReleaseDetailsPage() {
                   <a href="https://example.com/crypto-ad-2" target="_blank" rel="noopener noreferrer">
                     <img
                       src="https://images.unsplash.com/photo-1549421263-5ec394a5adf3"
-                      alt="Crypto Ad 2"
+                      alt="Advertisement for cryptocurrency trading"
                       className="w-full h-48 sm:h-64 md:h-56 object-cover rounded-lg cursor-pointer"
+                      loading="lazy"
                     />
                   </a>
                 </div>
@@ -165,8 +200,9 @@ function PressReleaseDetailsPage() {
                   >
                     <img
                       src={story.image || 'https://images.unsplash.com/photo-1621416950685-56b5d4c0b8a6'}
-                      alt={story.title}
+                      alt={`Image for ${story.title || 'Related Press Release'} in press releases`}
                       className="w-full h-48 object-cover-contain"
+                      loading="lazy"
                     />
                     <div className="p-4 flex flex-col">
                       <h3 className="font-bold text-gray-900 mb-2 hover:text-blue-600 cursor-pointer line-clamp-1">

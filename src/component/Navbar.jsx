@@ -2,6 +2,7 @@
 
 import { Link, NavLink } from 'react-router-dom';
 import { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { tickerItems } from '../data/tickerItems';
 
 const Navbar = ({ loading, error }) => {
@@ -67,27 +68,69 @@ const Navbar = ({ loading, error }) => {
     );
   };
 
+  // Structured data for the navigation
+  const navigationSchema = {
+    "@context": "https://schema.org",
+    "@type": "SiteNavigationElement",
+    "name": "Crypto Khabar Navigation",
+    "description": "Main navigation for Crypto Khabar, providing links to Home, News categories (Bitcoin, Blockchain, NFTs, DeFi, Ethereum, All), Markets, Analysis, and a live market ticker.",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Crypto Khabar",
+      "url": "https://cryptookhabar.netlify.app/"
+    },
+    "potentialAction": [
+      {
+        "@type": "SearchAction",
+        "target": "https://cryptookhabar.netlify.app/all?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      },
+      ...newsCategories.map(category => ({
+        "@type": "ViewAction",
+        "name": category.label,
+        "target": `https://cryptookhabar.netlify.app${category.to}`
+      })),
+      ...mainNavItems.map(item => ({
+        "@type": "ViewAction",
+        "name": item.label,
+        "target": `https://cryptookhabar.netlify.app${item.to}`
+      })),
+      {
+        "@type": "ViewAction",
+        "name": "Home",
+        "target": "https://cryptookhabar.netlify.app/"
+      }
+    ]
+  };
+
   return (
     <>
+      {/* SEO Structured Data */}
+      <Helmet>
+        <script type="application/ld+json">
+          {JSON.stringify(navigationSchema)}
+        </script>
+      </Helmet>
+
       <header className="bg-white shadow fixed -top-1 right-0 left-0 z-[100]">
         <div className="max-w-7xl mx-auto px-3 py-3 flex items-center justify-between relative">
           {/* Logo */}
-          <NavLink to="/" className="text-2xl font-bold text-gray-900 flex items-center">
+          <NavLink to="/" className="text-2xl font-bold text-gray-900 flex items-center" aria-label="CryptoKhabar Home">
             <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center text-white mr-2">
               ₿
             </div>
             CryptoKhabar
           </NavLink>
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-6 relative">
-            <NavLink to="/" className={navLinkClass}>Home</NavLink>
+          <nav className="hidden md:flex space-x-6 relative" aria-label="Main navigation">
+            <NavLink to="/" className={navLinkClass} aria-label="Home">Home</NavLink>
             <div className="relative" onMouseEnter={openDropdown} onMouseLeave={closeDropdown}>
-              <NavLink to="/all" className="text-gray-600 hover:text-blue-600">News</NavLink>
+              <NavLink to="/all" className="text-gray-600 hover:text-blue-600" aria-label="News">News</NavLink>
               {isDropdownOpen && (
-                <ul className="absolute bg-white shadow-lg mt-2 py-2 w-40 rounded-md z-[110] border border-gray-200">
+                <ul className="absolute bg-white shadow-lg mt-2 py-2 w-40 rounded-md z-[110] border border-gray-200" aria-label="News categories">
                   {newsCategories.map(category => (
                     <li key={category.to}>
-                      <NavLink to={category.to} className={dropdownLinkClass}>
+                      <NavLink to={category.to} className={dropdownLinkClass} aria-label={category.label}>
                         {category.label}
                       </NavLink>
                     </li>
@@ -96,7 +139,7 @@ const Navbar = ({ loading, error }) => {
               )}
             </div>
             {mainNavItems.map(item => (
-              <NavLink key={item.to} to={item.to} className={navLinkClass}>
+              <NavLink key={item.to} to={item.to} className={navLinkClass} aria-label={item.label}>
                 {item.label}
               </NavLink>
             ))}
@@ -105,6 +148,8 @@ const Navbar = ({ loading, error }) => {
           <button
             onClick={toggleMenu}
             className="md:hidden text-gray-600 hover:text-blue-600 focus:outline-none"
+            aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={isMenuOpen}
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
@@ -118,12 +163,13 @@ const Navbar = ({ loading, error }) => {
         </div>
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <nav className="md:hidden bg-white shadow-md relative z-[105]">
+          <nav className="md:hidden bg-white shadow-md relative z-[105]" aria-label="Mobile navigation">
             <div className="max-w-7xl mx-auto px-4 py-2 flex flex-col space-y-2">
               <NavLink
                 to="/"
                 className={navLinkClass}
                 onClick={toggleMenu}
+                aria-label="Home"
               >
                 Home
               </NavLink>
@@ -132,18 +178,19 @@ const Navbar = ({ loading, error }) => {
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                   to="/all"
                   className="text-gray-600 hover:text-blue-600 text-left w-full"
+                  aria-label="News"
                 >
                   News
                 </Link>
                 {isDropdownOpen && (
-                  <div className="pl-4 flex flex-col space-y-2 bg-white">
+                  <div className="pl-4 flex flex-col space-y-2 bg-white" aria-label="News categories">
                     {newsCategories.map(category => (
                       <NavLink
                         key={category.to}
                         to={category.to}
                         className={navLinkClass}
-                        
                         onClick={() => { toggleMenu(); setIsDropdownOpen(false); }}
+                        aria-label={category.label}
                       >
                         {category.label}
                       </NavLink>
@@ -157,6 +204,7 @@ const Navbar = ({ loading, error }) => {
                   to={item.to}
                   className={navLinkClass}
                   onClick={toggleMenu}
+                  aria-label={item.label}
                 >
                   {item.label}
                 </NavLink>

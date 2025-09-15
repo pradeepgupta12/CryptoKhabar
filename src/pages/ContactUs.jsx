@@ -1,27 +1,60 @@
+
+
+
+
 import { useState } from "react";
-import contactData from "../data/contactData";
-import {
-  FaEnvelope,
-  FaPhone,
-  FaMapMarkerAlt,
-  FaTwitter,
-  FaLinkedin,
-  FaFacebook,
-} from "react-icons/fa";
+import { Helmet } from 'react-helmet-async';
+import { Mail, Phone, MapPin, Twitter, Linkedin, Facebook } from "lucide-react";
+
+// Sample contact data
+const contactData = {
+  askMeQuestion: {
+    title: "Contact Us",
+    description: "Get in touch with us. We'd love to hear from you.",
+    successMessage: "Thank you for your message! We'll get back to you soon.",
+    labels: {
+      name: "Name",
+      email: "Email", 
+      mobile: "Mobile",
+      message: "Message"
+    },
+    submitButton: "Send Message"
+  },
+  info: [
+    { type: "Email", value: "hello@example.com", icon: "Mail" },
+    { type: "Phone", value: "+91 98765 43210", icon: "Phone" },
+    { type: "Location", value: "Mumbai, India", icon: "MapPin" }
+  ],
+  social: [
+    { icon: "Twitter", url: "#", color: "text-blue-500" },
+    { icon: "Linkedin", url: "#", color: "text-blue-600" },
+    { icon: "Facebook", url: "#", color: "text-blue-700" }
+  ]
+};
 
 const iconMap = {
-  FaEnvelope: FaEnvelope,
-  FaPhone: FaPhone,
-  FaMapMarkerAlt: FaMapMarkerAlt,
-  FaTwitter: FaTwitter,
-  FaLinkedin: FaLinkedin,
-  FaFacebook: FaFacebook,
+  Mail: Mail,
+  Phone: Phone,
+  MapPin: MapPin,
+  Twitter: Twitter,
+  Linkedin: Linkedin,
+  Facebook: Facebook
 };
+
+const countryCodes = [
+  { name: "India", code: "+91", flag: "🇮🇳" },
+  { name: "United States", code: "+1", flag: "🇺🇸" },
+  { name: "United Kingdom", code: "+44", flag: "🇬🇧" },
+  { name: "Australia", code: "+61", flag: "🇦🇺" },
+  { name: "Canada", code: "+1", flag: "🇨🇦" },
+];
 
 function ContactUs() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    countryCode: "+91",
+    mobile: "",
     message: "",
   });
 
@@ -34,163 +67,208 @@ function ContactUs() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form Submitted:", formData);
+    console.log("Form Submitted:", {
+      ...formData,
+      mobile: `${formData.countryCode}${formData.mobile}`,
+    });
     setSubmitted(true);
-    setFormData({ name: "", email: "", message: "" });
+    setFormData({ name: "", email: "", countryCode: "+91", mobile: "", message: "" });
+    
+    setTimeout(() => setSubmitted(false), 3000);
+  };
+
+  // Structured data for the contact page
+  const contactSchema = {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    "name": "Contact Us - Crypto Khabar",
+    "url": "https://cryptookhabar.netlify.app/contact/",
+    "description": contactData.askMeQuestion.description || "Get in touch with Crypto Khabar for inquiries, feedback, or support.",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Crypto Khabar",
+      "url": "https://cryptookhabar.netlify.app/",
+      "contactPoint": [
+        {
+          "@type": "ContactPoint",
+          "email": contactData.info.find(item => item.type === "Email")?.value || "hello@example.com",
+          "telephone": contactData.info.find(item => item.type === "Phone")?.value || "+91 98765 43210",
+          "contactType": "customer support"
+        }
+      ]
+    }
   };
 
   return (
-    <div className="w-full min-h-screen mt-12 bg-gray-100 pt-16 p-6">
-      <main className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* Contact Info */}
-        <section className="bg-white rounded-xl shadow-lg p-8">
-          {contactData.askMeQuestion?.description && (
-            <p className="text-gray-600 mb-8 text-lg leading-relaxed">
-              {contactData.askMeQuestion.description}
-            </p>
-          )}
-          {contactData.info?.length > 0 && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              {contactData.info.map((item, index) => {
+    <div className="min-h-screen bg-gray-50 py-12 px-4">
+      {/* SEO Metadata */}
+      <Helmet>
+        <title>Contact Us - Crypto Khabar</title>
+        <meta
+          name="description"
+          content={contactData.askMeQuestion.description || "Get in touch with Crypto Khabar for inquiries, feedback, or support."}
+        />
+        <link rel="canonical" href="https://cryptookhabar.netlify.app/contact/" />
+        <script type="application/ld+json">
+          {JSON.stringify(contactSchema)}
+        </script>
+      </Helmet>
+
+      <div className="max-w-6xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            {contactData.askMeQuestion?.title}
+          </h1>
+          <p className="text-lg text-gray-600">
+            {contactData.askMeQuestion?.description}
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Contact Info */}
+          <div className="bg-white rounded-lg shadow-md p-8">
+            <h2 className="text-2xl font-semibold text-gray-800 mb-6">Get in Touch</h2>
+            
+            <div className="space-y-4 mb-8">
+              {contactData.info?.map((item, index) => {
                 const Icon = iconMap[item.icon];
                 return (
-                  <div
-                    key={index}
-                    className="relative bg-gradient-to-br from-blue-50 to-gray-100 p-6 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
-                  >
-                    <div className="flex items-start gap-4">
-                      {item.icon && Icon && (
-                        <div className="flex-shrink-0 w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center text-xl shadow-md">
-                          <Icon />
-                        </div>
-                      )}
-                      <div className="flex-1 min-w-0">
-                        {item.type && (
-                          <h3 className="font-semibold text-gray-800 text-lg">
-                            {item.type}
-                          </h3>
-                        )}
-                        {item.value && (
-                          <p className="text-gray-600 text-sm mt-1 break-words">
-                            {item.value}
-                          </p>
-                        )}
+                  <div key={index} className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
+                    {Icon && (
+                      <div className="w-10 h-10 bg-blue-500 text-white rounded-full flex items-center justify-center">
+                        <Icon size={18} />
                       </div>
+                    )}
+                    <div>
+                      <h3 className="font-medium text-gray-800">{item.type}</h3>
+                      <p className="text-gray-600">{item.value}</p>
                     </div>
                   </div>
                 );
               })}
             </div>
-          )}
-          {contactData.social?.length > 0 && (
-            <div className="mt-8">
+
+            {/* Social Links */}
+            <div>
+              <h3 className="font-medium text-gray-800 mb-4">Follow Us</h3>
               <div className="flex space-x-4">
-                {contactData.social.map((social, index) => {
+                {contactData.social?.map((social, index) => {
                   const Icon = iconMap[social.icon];
                   return (
                     <a
                       key={index}
                       href={social.url}
-                      className={`${social.color} text-2xl hover:scale-110 transition-transform duration-200`}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-blue-500 hover:bg-blue-500 hover:text-white transition-colors"
                     >
-                      {social.icon && Icon && <Icon />}
+                      {Icon && <Icon size={18} />}
                     </a>
                   );
                 })}
               </div>
             </div>
-          )}
-        </section>
+          </div>
 
-        {/* Ask Me a Question Form */}
-        <section className="bg-white rounded-xl shadow-lg p-8">
-          {contactData.askMeQuestion?.title && (
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">
-              {contactData.askMeQuestion.title}
-            </h2>
-          )}
-          {submitted ? (
-            contactData.askMeQuestion?.successMessage && (
-              <div className="text-green-600 font-semibold text-lg">
-                ✅ {contactData.askMeQuestion.successMessage}
+          {/* Contact Form */}
+          <div className="bg-white rounded-lg shadow-md p-8">
+            <h2 className="text-2xl font-semibold text-gray-800 mb-6">Send Message</h2>
+
+            {submitted ? (
+              <div className="text-center py-8">
+                <div className="text-green-600 text-lg font-medium">
+                  ✅ {contactData.askMeQuestion?.successMessage}
+                </div>
               </div>
-            )
-          ) : (
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                {contactData.askMeQuestion?.labels?.name && (
-                  <label
-                    htmlFor="name"
-                    className="block text-gray-700 font-medium mb-2"
-                  >
-                    {contactData.askMeQuestion.labels.name}
+            ) : (
+              <div className="space-y-4">
+                {/* Name */}
+                <div>
+                  <label className="block text-gray-700 font-medium mb-2">
+                    {contactData.askMeQuestion?.labels?.name}
                   </label>
-                )}
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                  className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200"
-                />
-              </div>
-              <div>
-                {contactData.askMeQuestion?.labels?.email && (
-                  <label
-                    htmlFor="email"
-                    className="block text-gray-700 font-medium mb-2"
-                  >
-                    {contactData.askMeQuestion.labels.email}
+                  <input
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:border-blue-500"
+                    placeholder="Your name"
+                  />
+                </div>
+
+                {/* Email */}
+                <div>
+                  <label className="block text-gray-700 font-medium mb-2">
+                    {contactData.askMeQuestion?.labels?.email}
                   </label>
-                )}
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200"
-                />
-              </div>
-              <div>
-                {contactData.askMeQuestion?.labels?.message && (
-                  <label
-                    htmlFor="message"
-                    className="block text-gray-700 font-medium mb-2"
-                  >
-                    {contactData.askMeQuestion.labels.message}
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:border-blue-500"
+                    placeholder="your@email.com"
+                  />
+                </div>
+
+                {/* Mobile */}
+                <div>
+                  <label className="block text-gray-700 font-medium mb-2">
+                    {contactData.askMeQuestion?.labels?.mobile}
                   </label>
-                )}
-                <textarea
-                  id="message"
-                  name="message"
-                  rows="4"
-                  value={formData.message}
-                  onChange={handleChange}
-                  required
-                  className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200"
-                />
-              </div>
-              {contactData.askMeQuestion?.submitButton && (
+                  <div className="flex gap-3">
+                    <select
+                      name="countryCode"
+                      value={formData.countryCode}
+                      onChange={handleChange}
+                      className="w-1/3 border border-gray-300 rounded-lg p-3 focus:outline-none focus:border-blue-500"
+                    >
+                      {countryCodes.map((country) => (
+                        <option key={country.code} value={country.code}>
+                          {country.flag} {country.code}
+                        </option>
+                      ))}
+                    </select>
+                    <input
+                      type="tel"
+                      name="mobile"
+                      value={formData.mobile}
+                      onChange={handleChange}
+                      className="w-2/3 border border-gray-300 rounded-lg p-3 focus:outline-none focus:border-blue-500"
+                      placeholder="Mobile number"
+                    />
+                  </div>
+                </div>
+
+                {/* Message */}
+                <div>
+                  <label className="block text-gray-700 font-medium mb-2">
+                    {contactData.askMeQuestion?.labels?.message}
+                  </label>
+                  <textarea
+                    name="message"
+                    rows="4"
+                    value={formData.message}
+                    onChange={handleChange}
+                    className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:border-blue-500 resize-none"
+                    placeholder="Your message..."
+                  />
+                </div>
+
+                {/* Submit Button */}
                 <button
-                  type="submit"
-                  className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-all duration-200 shadow-md hover:shadow-lg"
+                  onClick={handleSubmit}
+                  className="w-full bg-blue-500 text-white py-3 px-6 rounded-lg hover:bg-blue-600 transition-colors font-medium"
                 >
-                  {contactData.askMeQuestion.submitButton}
+                  {contactData.askMeQuestion?.submitButton}
                 </button>
-              )}
-            </form>
-          )}
-        </section>
-      </main>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
 
 export default ContactUs;
-

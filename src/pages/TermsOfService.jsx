@@ -1,4 +1,6 @@
+
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import { termsAndService } from '../data/termsAndService';
 
 function TermsOfService() {
@@ -119,8 +121,51 @@ function TermsOfService() {
     }
   ];
 
+  // Structured data for the Terms of Service page
+  const webpageSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Terms of Service - Crypto Khabar",
+    "description": "Review the Terms of Service for using Crypto Khabar, including user responsibilities, intellectual property, third-party services, liability, termination, and contact information.",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Crypto Khabar",
+      "url": "https://cryptookhabar.netlify.app/"
+    },
+    "mainEntity": {
+      "@type": "CreativeWork",
+      "name": "Crypto Khabar Terms of Service",
+      "dateModified": termsAndService.lastUpdated || '2025-09-11',
+      "publisher": {
+        "@type": "Organization",
+        "name": termsAndService.websiteName,
+        "contactPoint": [
+          {
+            "@type": "ContactPoint",
+            "email": termsAndService.contactInformation.email,
+            "telephone": termsAndService.contactInformation.phone,
+            "address": termsAndService.contactInformation.address
+          }
+        ]
+      }
+    }
+  };
+
   return (
     <div className="w-full min-h-screen bg-gray-50 mt-20">
+      {/* SEO Metadata */}
+      <Helmet>
+        <title>Terms of Service - Crypto Khabar</title>
+        <meta
+          name="description"
+          content="Review the Terms of Service for using Crypto Khabar, including user responsibilities, intellectual property, third-party services, liability, termination, and contact information."
+        />
+        <link rel="canonical" href="https://cryptookhabar.netlify.app/terms-of-service/" />
+        <script type="application/ld+json">
+          {JSON.stringify(webpageSchema)}
+        </script>
+      </Helmet>
+
       {/* Header */}
       <header className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

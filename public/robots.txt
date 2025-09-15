@@ -1,0 +1,12 @@
+# Apply rules to all crawlers
+User-agent: *
+# Block admin panel
+Disallow: /admin/
+# Block scripts directory
+Disallow: /scripts/
+# Block search query parameters to prevent indexing dynamic search pages
+Disallow: /search?q=
+# Allow all other pages
+Allow: /
+# Reference the sitemap
+Sitemap: https://cryptookhabar.netlify.app/sitemap.xml

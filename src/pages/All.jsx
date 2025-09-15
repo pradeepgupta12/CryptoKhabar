@@ -1,7 +1,7 @@
 
 
-
 import React from "react";
+import { Helmet } from 'react-helmet-async';
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import allData from "../data/allData"; // Import allData.js
 
@@ -41,8 +41,39 @@ function All() {
     navigate(`/all/${item.category}/${item.id}`, { state: { item, type } });
   };
 
+  // Structured data for top stories
+  const newsArticlesSchema = topStories.map((story) => ({
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    "headline": story.headline,
+    "image": story.image || "https://via.placeholder.com/500x500",
+    "datePublished": story.date || "2025-09-11",
+    "author": {
+      "@type": "Organization",
+      "name": "Crypto Khabar"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Crypto Khabar",
+      "url": "https://cryptookhabar.netlify.app/"
+    }
+  }));
+
   return (
     <div className="page mt-20">
+      {/* SEO Metadata */}
+      <Helmet>
+        <title>All Crypto News - Crypto Khabar</title>
+        <meta
+          name="description"
+          content="Explore the latest cryptocurrency news across Bitcoin, Ethereum, Blockchain, DeFi, and NFTs. Stay updated with market trends and insights at Crypto Khabar."
+        />
+        <link rel="canonical" href="https://cryptookhabar.netlify.app/all/" />
+        <script type="application/ld+json">
+          {JSON.stringify(newsArticlesSchema)}
+        </script>
+      </Helmet>
+
       <main className="max-w-7xl mx-auto px-4 py-8">
         {/* All News Section */}
         <section className="mb-12 text-left">
@@ -68,12 +99,13 @@ function All() {
                 <div
                   key={`${story.category}-${story.id}`}
                   className="relative rounded-lg overflow-hidden shadow-md h-full transition duration-300 ease-in-out transform hover:-translate-y-2 cursor-pointer"
-                  onClick={() => handleCardClick(story, "story")} // Add click handler
+                  onClick={() => handleCardClick(story, "story")}
                 >
                   <img
                     src={story.image}
-                    alt={story.headline}
+                    alt={`Featured image for ${story.headline} in ${story.category} news`}
                     className="w-full h-[500px] object-cover-contain"
+                    loading="lazy"
                     onError={(e) => (e.target.src = "https://via.placeholder.com/500x500")}
                   />
                   <div className="absolute top-2 left-2 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded">
@@ -92,13 +124,14 @@ function All() {
                 <div
                   key={`${story.category}-${story.id}`}
                   className="bg-white rounded-lg shadow-md flex flex-col overflow-hidden transition duration-300 ease-in-out transform hover:-translate-y-2 cursor-pointer"
-                  onClick={() => handleCardClick(story, "story")} // Add click handler
+                  onClick={() => handleCardClick(story, "story")}
                 >
                   <div className="relative w-full h-[calc(100%-64px)]">
                     <img
                       src={story.image}
-                      alt={story.headline}
+                      alt={`Image for ${story.headline} in ${story.category} news`}
                       className="w-full h-full object-cover-contain rounded-lg"
+                      loading="lazy"
                       onError={(e) => (e.target.src = "https://via.placeholder.com/500x500")}
                     />
                     <div className="absolute top-2 left-2 bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded">
@@ -126,14 +159,15 @@ function All() {
               <div
                 key={`${article.category}-${article.id}`}
                 className="flex flex-col md:flex-row bg-white rounded-lg shadow-md overflow-hidden transition duration-300 ease-in-out transform hover:-translate-y-2 cursor-pointer"
-                onClick={() => handleCardClick(article, "article")} // Add click handler
+                onClick={() => handleCardClick(article, "article")}
               >
                 {/* Article Image */}
                 <div className="md:w-1/3">
                   <img
                     src={article.image}
-                    alt={article.headline}
+                    alt={`Image for ${article.headline} in ${article.category} news`}
                     className="w-full h-48 md:h-auto md:max-h-[180px] object-cover-contain rounded-lg"
+                    loading="lazy"
                     onError={(e) => (e.target.src = "https://via.placeholder.com/500x500")}
                   />
                 </div>

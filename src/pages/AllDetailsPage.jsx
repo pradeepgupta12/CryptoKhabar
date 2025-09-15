@@ -1,7 +1,11 @@
 
 
 
+
+
+
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { FaThumbsUp, FaComment, FaShare } from 'react-icons/fa';
 import { useEffect } from 'react';
 import allData from '../data/allData'; // Adjust path to your allData.js file
@@ -24,6 +28,25 @@ function AllDetailsPage() {
 
   // Determine the category dynamically or fallback to 'bitcoin'
   const itemCategory = item.category || (state?.item ? state.item.category : 'bitcoin');
+
+  // Structured data for the article
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    "headline": item.headline || 'Untitled Crypto News',
+    "image": item.image || 'https://via.placeholder.com/500x500',
+    "datePublished": item.date || '2025-09-11',
+    "description": item.summary || item.headline || 'No content available.',
+    "author": {
+      "@type": "Organization",
+      "name": "Crypto Khabar"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Crypto Khabar",
+      "url": "https://cryptookhabar.netlify.app/"
+    }
+  };
 
   const shareArticle = (e) => {
     e.stopPropagation();
@@ -72,6 +95,19 @@ function AllDetailsPage() {
 
   return (
     <div className="w-full min-h-screen bg-gray-100 pt-12 p-4 mt-8">
+      {/* SEO Metadata */}
+      <Helmet>
+        <title>{`${item.headline || 'Crypto News'} - Crypto Khabar`}</title>
+        <meta
+          name="description"
+          content={item.summary || `Read the latest ${itemCategory} news: ${item.headline || 'Crypto News'} on Crypto Khabar.`}
+        />
+        <link rel="canonical" href={`https://cryptookhabar.netlify.app/all/${itemCategory}/${item.id}`} />
+        <script type="application/ld+json">
+          {JSON.stringify(articleSchema)}
+        </script>
+      </Helmet>
+
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2">
@@ -79,8 +115,9 @@ function AllDetailsPage() {
               <div className="relative">
                 <img
                   src={item.image || 'https://via.placeholder.com/500x500'}
-                  alt={item.headline || 'Crypto News Image'}
+                  alt={`Featured image for ${item.headline || 'Crypto News'} in ${itemCategory} news`}
                   className="w-full h-64 sm:h-80 md:h-96 object-cover-contain rounded-t-lg"
+                  loading="lazy"
                 />
                 <div className="absolute top-4 left-4">
                   <span className="bg-blue-600 text-white px-2 py-1 rounded text-xs font-medium">
@@ -154,8 +191,9 @@ function AllDetailsPage() {
                   <a href="https://example.com/crypto-ad-1" target="_blank" rel="noopener noreferrer">
                     <img
                       src="https://images.unsplash.com/photo-1621416950685-56b5d4c0b8a6"
-                      alt="Crypto Ad 1"
+                      alt="Advertisement for cryptocurrency services"
                       className="w-full h-48 sm:h-64 md:h-56 object-cover rounded-lg cursor-pointer"
+                      loading="lazy"
                     />
                   </a>
                 </div>
@@ -166,8 +204,9 @@ function AllDetailsPage() {
                   <a href="https://example.com/crypto-ad-2" target="_blank" rel="noopener noreferrer">
                     <img
                       src="https://images.unsplash.com/photo-1549421263-5ec394a5adf3"
-                      alt="Crypto Ad 2"
+                      alt="Advertisement for cryptocurrency trading"
                       className="w-full h-48 sm:h-64 md:h-56 object-cover rounded-lg cursor-pointer"
+                      loading="lazy"
                     />
                   </a>
                 </div>
@@ -187,8 +226,9 @@ function AllDetailsPage() {
                 >
                   <img
                     src={related.image || 'https://via.placeholder.com/500x500'}
-                    alt={related.headline || 'Related News Image'}
+                    alt={`Image for ${related.headline || 'Related News'} in ${related.category} news`}
                     className="w-full h-48 object-cover-contain"
+                    loading="lazy"
                   />
                   <div className="p-4 flex flex-col">
                     <h3 className="font-bold text-gray-900 mb-2 hover:text-blue-600 cursor-pointer line-clamp-1">
@@ -219,5 +259,3 @@ function AllDetailsPage() {
 }
 
 export default AllDetailsPage;
-
-

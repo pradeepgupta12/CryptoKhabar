@@ -1,4 +1,8 @@
+
+
+
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { FaThumbsUp, FaComment, FaShare } from 'react-icons/fa';
 import { useEffect } from 'react';
 import ethereumData from '../data/ethereumData'; // Adjust path to your ethereumData.js file
@@ -18,6 +22,25 @@ function EthereumDetailsPage() {
   // Use the item from state, or fallback to the first article
   const item = state?.item || ethereumData.latest_ethereum_news.articles[0] || {};
   const type = state?.type || 'article'; // 'story' or 'article'
+
+  // Structured data for the article
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    "headline": item.headline || 'Untitled Ethereum News',
+    "image": item.image || 'https://via.placeholder.com/500x500',
+    "datePublished": item.date || '2025-09-11',
+    "description": item.summary || item.headline || 'No content available.',
+    "author": {
+      "@type": "Organization",
+      "name": "Crypto Khabar"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Crypto Khabar",
+      "url": "https://cryptookhabar.netlify.app/"
+    }
+  };
 
   const shareArticle = (e) => {
     e.stopPropagation();
@@ -58,6 +81,19 @@ function EthereumDetailsPage() {
 
   return (
     <div className="w-full min-h-screen bg-gray-100 pt-12 p-4 mt-8">
+      {/* SEO Metadata */}
+      <Helmet>
+        <title>{`${item.headline || 'Ethereum News'} - Crypto Khabar`}</title>
+        <meta
+          name="description"
+          content={item.summary || `Read the latest Ethereum news: ${item.headline || 'Ethereum News'} on Crypto Khabar.`}
+        />
+        <link rel="canonical" href={`https://cryptookhabar.netlify.app/ethereum/${item.id}`} />
+        <script type="application/ld+json">
+          {JSON.stringify(articleSchema)}
+        </script>
+      </Helmet>
+
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2">
@@ -65,8 +101,9 @@ function EthereumDetailsPage() {
               <div className="relative">
                 <img
                   src={item.image || 'https://via.placeholder.com/500x500'}
-                  alt={item.headline || 'Ethereum News Image'}
+                  alt={`Featured image for ${item.headline || 'Ethereum News'} in Ethereum news`}
                   className="w-full h-64 sm:h-80 md:h-96 object-cover-contain rounded-t-lg"
+                  loading="lazy"
                 />
                 <div className="absolute top-4 left-4">
                   <span className="bg-blue-600 text-white px-2 py-1 rounded text-xs font-medium">
@@ -140,8 +177,9 @@ function EthereumDetailsPage() {
                   <a href="https://example.com/crypto-ad-1" target="_blank" rel="noopener noreferrer">
                     <img
                       src="https://images.unsplash.com/photo-1621416950685-56b5d4c0b8a6"
-                      alt="Crypto Ad 1"
+                      alt="Advertisement for cryptocurrency services"
                       className="w-full h-48 sm:h-64 md:h-56 object-cover rounded-lg cursor-pointer"
+                      loading="lazy"
                     />
                   </a>
                 </div>
@@ -152,8 +190,9 @@ function EthereumDetailsPage() {
                   <a href="https://example.com/crypto-ad-2" target="_blank" rel="noopener noreferrer">
                     <img
                       src="https://images.unsplash.com/photo-1549421263-5ec394a5adf3"
-                      alt="Crypto Ad 2"
+                      alt="Advertisement for cryptocurrency trading"
                       className="w-full h-48 sm:h-64 md:h-56 object-cover rounded-lg cursor-pointer"
+                      loading="lazy"
                     />
                   </a>
                 </div>
@@ -172,8 +211,9 @@ function EthereumDetailsPage() {
               >
                 <img
                   src={related.image || 'https://via.placeholder.com/500x500'}
-                  alt={related.headline}
+                  alt={`Image for ${related.headline || 'Related Ethereum News'} in Ethereum news`}
                   className="w-full h-48 object-cover-contain"
+                  loading="lazy"
                 />
                 <div className="p-4 flex flex-col">
                   <h3 className="font-bold text-gray-900 mb-2 hover:text-blue-600 cursor-pointer line-clamp-1">

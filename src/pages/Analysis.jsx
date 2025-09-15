@@ -1,7 +1,10 @@
 
 
 
+
+
 import { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import analysisData from '../data/analysisData'; // Adjust path to your analysisData.js file
 
 function Analysis() {
@@ -17,8 +20,52 @@ function Analysis() {
     setLikes((prev) => ({ ...prev, [articleId]: prev[articleId] + 1 }));
   };
 
+  // Structured data for the analysis articles
+  const articleListSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Crypto Market Analysis - Crypto Khabar",
+    "url": "https://cryptookhabar.netlify.app/analysis/",
+    "description": "Explore in-depth cryptocurrency market analysis, trends, and sentiment insights for Bitcoin, Ethereum, DeFi, and more at Crypto Khabar.",
+    "mainEntity": {
+      "@type": "ItemList",
+      "itemListElement": analysisData.articles.map((article, index) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "item": {
+          "@type": "Article",
+          "headline": article.title || "Crypto Analysis Article",
+          "description": article.description || "Analysis of cryptocurrency market trends and insights.",
+          "author": {
+            "@type": "Organization",
+            "name": "Crypto Khabar"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "Crypto Khabar",
+            "url": "https://cryptookhabar.netlify.app/"
+          },
+          "datePublished": article.date || "2025-09-11"
+        }
+      }))
+    }
+  };
+
   return (
     <div className="page mt-20">
+      {/* SEO Metadata */}
+      <Helmet>
+        <title>Crypto Market Analysis - Crypto Khabar</title>
+        <meta
+          name="description"
+          content="Explore in-depth cryptocurrency market analysis, trends, and sentiment insights for Bitcoin, Ethereum, DeFi, and more at Crypto Khabar."
+        />
+        <link rel="canonical" href="https://cryptookhabar.netlify.app/analysis/" />
+        <script type="application/ld+json">
+          {JSON.stringify(articleListSchema)}
+        </script>
+      </Helmet>
+
       <main className="max-w-7xl mx-auto px-4 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">

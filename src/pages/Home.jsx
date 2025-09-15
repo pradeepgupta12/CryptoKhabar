@@ -1,8 +1,12 @@
   
 
 
+
+
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { LatestCasinoNews } from '../data/LatestCasinoNews';
 import { cryptoCurrencyNews } from '../data/cryptoCurrencyNews';
 import { newsPage } from '../data/newsPage';
@@ -57,8 +61,8 @@ function Home() {
     e.stopPropagation();
     if (navigator.share) {
       navigator.share({
-        title: 'CryptoNews Article',
-        text: 'Check out this crypto news article',
+        title: 'CryptoKhabar Article',
+        text: 'Check out this crypto news article on CryptoKhabar',
         url: window.location.href,
       }).catch((err) => console.error('Share failed:', err));
     } else {
@@ -85,11 +89,46 @@ function Home() {
     }
   };
 
+  // SEO: Structured Data for WebSite and BreadcrumbList
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'CryptoKhabar',
+    url: 'https://cryptookhabar.netlify.app/',
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: 'https://cryptookhabar.netlify.app/search?q={search_term_string}',
+      'query-input': 'required name=search_term_string'
+    }
+  };
+
+  const breadcrumbData = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'होम',
+        item: 'https://cryptookhabar.netlify.app/'
+      }
+    ]
+  };
+
   return (
     <div className="w-full min-h-screen bg-gray-100 mt-20">
+      <Helmet>
+        <title>CryptoKhabar | Latest Crypto News & Updates</title>
+        <meta name="description" content="Stay updated with the latest cryptocurrency news, market trends, and deep dives at CryptoKhabar." />
+        <meta name="keywords" content="crypto news, cryptocurrency, bitcoin, blockchain, market updates, CryptoKhabar" />
+        <link rel="canonical" href="https://cryptookhabar.netlify.app/" />
+        <meta name="robots" content="index, follow" />
+        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
+        <script type="application/ld+json">{JSON.stringify(breadcrumbData)}</script>
+      </Helmet>
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Latest Crypto News</h2>
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">Latest Crypto News</h1>
           <p className="text-gray-600 text-sm sm:text-base leading-relaxed">{newsPage.description}</p>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
@@ -103,7 +142,10 @@ function Home() {
                 <div className="relative">
                   <img
                     src={article.image.link}
-                    alt={article.title}
+                    srcSet={`${article.image.link.replace('.jpg', '-small.jpg')} 300w, ${article.image.link} 600w`}
+                    sizes="(max-width: 600px) 300px, 600px"
+                    loading="lazy"
+                    alt={`${article.title} - CryptoKhabar`}
                     className="w-full h-64 object-cover"
                   />
                   <div className="absolute top-4 left-4">
@@ -164,7 +206,10 @@ function Home() {
                 >
                   <img
                     src={article.image.link}
-                    alt={article.title}
+                    srcSet={`${article.image.link.replace('.jpg', '-small.jpg')} 300w, ${article.image.link} 600w`}
+                    sizes="(max-width: 600px) 300px, 600px"
+                    loading="lazy"
+                    alt={`${article.title} - CryptoKhabar`}
                     className="w-full h-48 object-cover"
                   />
                   <div className="p-4 flex flex-col">
@@ -224,8 +269,8 @@ function Home() {
                 <input
                   type="email"
                   id="newsletter-email"
-                  placeholder="Enter your email-----"
-                  className="w-full px-3 py-2 rounded-lg text-white placeholder-white"
+                  placeholder="Enter your email"
+                  className="w-full px-3 py-2 rounded-lg text-gray-900 placeholder-gray-500"
                 />
                 <button
                   onClick={subscribeNewsletter}
@@ -292,7 +337,10 @@ function Home() {
               >
                 <img
                   src={article.image.link}
-                  alt={article.title}
+                  srcSet={`${article.image.link.replace('.jpg', '-small.jpg')} 300w, ${article.image.link} 600w`}
+                  sizes="(max-width: 600px) 300px, 600px"
+                  loading="lazy"
+                  alt={`${article.title} - CryptoKhabar`}
                   className="w-full h-48 object-cover"
                 />
                 <div className="p-4 flex flex-col">
@@ -324,59 +372,51 @@ function Home() {
         </div>
         <div className="mt-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Partner Content</h2>
-          <div className="overflow-x-auto scrollbar-hide">
-            <style jsx>{`
-              .scrollbar-hide {
-                -ms-overflow-style: none;
-                scrollbar-width: none;
-              }
-              .scrollbar-hide::-webkit-scrollbar {
-                display: none;
-              }
-            `}</style>
-            <div className="flex gap-4 pb-4" style={{width: 'max-content'}}>
-              {partnerContent.map((article) => (
-                <div
-                  key={article.id}
-                  className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex-shrink-0"
-                  style={{width: '200px'}}
-                  onClick={() => showArticle({ ...article, section: 'partner' })}
-                >
-                  <div className="relative">
-                    <img
-                      src={article.image}
-                      alt={article.title}
-                      className="w-full h-32 sm:h-36 object-cover rounded-lg"
-                    />
-                    <div className="absolute top-2 left-2">
-                      <span className="bg-blue-600 text-white px-2 py-1 rounded text-xs font-medium">
-                        PARTNER CONTENT
-                      </span>
-                    </div>
-                    <div className="absolute bottom-2 right-2">
-                      <div className="bg-black bg-opacity-50 text-white px-1 py-0.5 rounded text-xs flex items-center">
-                        <span className="text-yellow-400 mr-1">●</span>
-                        crypto.news
-                      </div>
-                    </div>
+          <div className="overflow-x-auto scrollbar-hidden flex">
+            {partnerContent.map((article) => (
+              <div
+                key={article.id}
+                className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex-shrink-0 mr-4"
+                style={{ width: '200px' }}
+                onClick={() => showArticle({ ...article, section: 'partner' })}
+              >
+                <div className="relative">
+                  <img
+                    src={article.image}
+                    srcSet={`${article.image.replace('.jpg', '-small.jpg')} 300w, ${article.image} 600w`}
+                    sizes="(max-width: 600px) 300px, 600px"
+                    loading="lazy"
+                    alt={`${article.title} - Partner Content - CryptoKhabar`}
+                    className="w-full h-32 sm:h-36 object-cover rounded-lg"
+                  />
+                  <div className="absolute top-2 left-2">
+                    <span className="bg-blue-600 text-white px-2 py-1 rounded text-xs font-medium">
+                      PARTNER CONTENT
+                    </span>
                   </div>
-                  <div className="p-3">
-                    <h3 className="font-medium text-gray-900 text-sm leading-tight line-clamp-2 hover:text-blue-600 transition-colors">
-                      {article.title}
-                    </h3>
-                    <div className="flex items-center justify-between text-xs text-gray-500 mt-2">
-                      <span>{article.author || 'Partner'}</span>
-                      <button
-                        onClick={likeArticle('partner', article.id)}
-                        className="hover:text-blue-600 transition-colors flex items-center gap-1"
-                      >
-                        <FaThumbsUp /> {likes[`partner-${article.id}`]}
-                      </button>
+                  <div className="absolute bottom-2 right-2">
+                    <div className="bg-black bg-opacity-50 text-white px-1 py-0.5 rounded text-xs flex items-center">
+                      <span className="text-yellow-400 mr-1">●</span>
+                      CryptoKhabar
                     </div>
                   </div>
                 </div>
-              ))}
-            </div>
+                <div className="p-3">
+                  <h3 className="font-medium text-gray-900 text-sm leading-tight line-clamp-2 hover:text-blue-600 transition-colors">
+                    {article.title}
+                  </h3>
+                  <div className="flex items-center justify-between text-xs text-gray-500 mt-2">
+                    <span>{article.author || 'Partner'}</span>
+                    <button
+                      onClick={likeArticle('partner', article.id)}
+                      className="hover:text-blue-600 transition-colors flex items-center gap-1"
+                    >
+                      <FaThumbsUp /> {likes[`partner-${article.id}`]}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
         <div className="mt-8">
@@ -390,7 +430,10 @@ function Home() {
               >
                 <img
                   src={article.image.link}
-                  alt={article.title}
+                  srcSet={`${article.image.link.replace('.jpg', '-small.jpg')} 300w, ${article.image.link} 600w`}
+                  sizes="(max-width: 600px) 300px, 600px"
+                  loading="lazy"
+                  alt={`${article.title} - Deep Dive - CryptoKhabar`}
                   className="w-full h-48 object-cover"
                 />
                 <div className="p-4 flex flex-col">
@@ -422,59 +465,51 @@ function Home() {
         </div>
         <div className="mt-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Press Releases</h2>
-          <div className="overflow-x-auto scrollbar-hide">
-            <style jsx>{`
-              .scrollbar-hide {
-                -ms-overflow-style: none;
-                scrollbar-width: none;
-              }
-              .scrollbar-hide::-webkit-scrollbar {
-                display: none;
-              }
-            `}</style>
-            <div className="flex gap-4 pb-4" style={{width: 'max-content'}}>
-              {pressReleases.map((article) => (
-                <div
-                  key={article.id}
-                  className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex-shrink-0"
-                  style={{width: '200px'}}
-                  onClick={() => showArticle({ ...article, section: 'press' })}
-                >
-                  <div className="relative">
-                    <img
-                      src={article.image}
-                      alt={article.title}
-                      className="w-full h-32 sm:h-36 object-cover rounded-lg"
-                    />
-                    <div className="absolute top-2 left-2">
-                      <span className="bg-blue-600 text-white px-2 py-1 rounded text-xs font-medium">
-                        PRESS RELEASE
-                      </span>
-                    </div>
-                    <div className="absolute bottom-2 right-2">
-                      <div className="bg-black bg-opacity-50 text-white px-1 py-0.5 rounded text-xs flex items-center">
-                        <span className="text-yellow-400 mr-1">●</span>
-                        crypto.news
-                      </div>
-                    </div>
+          <div className="overflow-x-auto scrollbar-hidden flex">
+            {pressReleases.map((article) => (
+              <div
+                key={article.id}
+                className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex-shrink-0 mr-4"
+                style={{ width: '200px' }}
+                onClick={() => showArticle({ ...article, section: 'press' })}
+              >
+                <div className="relative">
+                  <img
+                    src={article.image}
+                    srcSet={`${article.image.replace('.jpg', '-small.jpg')} 300w, ${article.image} 600w`}
+                    sizes="(max-width: 600px) 300px, 600px"
+                    loading="lazy"
+                    alt={`${article.title} - Press Release - CryptoKhabar`}
+                    className="w-full h-32 sm:h-36 object-cover rounded-lg"
+                  />
+                  <div className="absolute top-2 left-2">
+                    <span className="bg-blue-600 text-white px-2 py-1 rounded text-xs font-medium">
+                      PRESS RELEASE
+                    </span>
                   </div>
-                  <div className="p-3">
-                    <h3 className="font-medium text-gray-900 text-sm leading-tight line-clamp-2 hover:text-blue-600 transition-colors">
-                      {article.title}
-                    </h3>
-                    <div className="flex items-center justify-between text-xs text-gray-500 mt-2">
-                      <span>{article.author || 'Press'}</span>
-                      <button
-                        onClick={likeArticle('press', article.id)}
-                        className="hover:text-blue-600 transition-colors flex items-center gap-1"
-                      >
-                        <FaThumbsUp /> {likes[`press-${article.id}`]}
-                      </button>
+                  <div className="absolute bottom-2 right-2">
+                    <div className="bg-black bg-opacity-50 text-white px-1 py-0.5 rounded text-xs flex items-center">
+                      <span className="text-yellow-400 mr-1">●</span>
+                      CryptoKhabar
                     </div>
                   </div>
                 </div>
-              ))}
-            </div>
+                <div className="p-3">
+                  <h3 className="font-medium text-gray-900 text-sm leading-tight line-clamp-2 hover:text-blue-600 transition-colors">
+                    {article.title}
+                  </h3>
+                  <div className="flex items-center justify-between text-xs text-gray-500 mt-2">
+                    <span>{article.author || 'Press'}</span>
+                    <button
+                      onClick={likeArticle('press', article.id)}
+                      className="hover:text-blue-600 transition-colors flex items-center gap-1"
+                    >
+                      <FaThumbsUp /> {likes[`press-${article.id}`]}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
         <div className="mt-8">
@@ -488,7 +523,10 @@ function Home() {
               >
                 <img
                   src={article.image.link}
-                  alt={article.title}
+                  srcSet={`${article.image.link.replace('.jpg', '-small.jpg')} 300w, ${article.image.link} 600w`}
+                  sizes="(max-width: 600px) 300px, 600px"
+                  loading="lazy"
+                  alt={`${article.title} - Top Story - CryptoKhabar`}
                   className="w-full h-48 object-cover"
                 />
                 <div className="p-4 flex flex-col">
@@ -520,59 +558,51 @@ function Home() {
         </div>
         <div className="mt-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Market Outlook</h2>
-          <div className="overflow-x-auto scrollbar-hide">
-            <style jsx>{`
-              .scrollbar-hide {
-                -ms-overflow-style: none;
-                scrollbar-width: none;
-              }
-              .scrollbar-hide::-webkit-scrollbar {
-                display: none;
-              }
-            `}</style>
-            <div className="flex gap-4 pb-4" style={{width: 'max-content'}}>
-              {marketOutlook.map((article) => (
-                <div
-                  key={article.id}
-                  className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex-shrink-0"
-                  style={{width: '200px'}}
-                  onClick={() => showArticle({ ...article, section: 'market' })}
-                >
-                  <div className="relative">
-                    <img
-                      src={article.image}
-                      alt={article.title}
-                      className="w-full h-32 sm:h-36 object-cover rounded-lg"
-                    />
-                    <div className="absolute top-2 left-2">
-                      <span className="bg-blue-600 text-white px-2 py-1 rounded text-xs font-medium">
-                        MARKETS
-                      </span>
-                    </div>
-                    <div className="absolute bottom-2 right-2">
-                      <div className="bg-black bg-opacity-50 text-white px-1 py-0.5 rounded text-xs flex items-center">
-                        <span className="text-yellow-400 mr-1">●</span>
-                        crypto.news
-                      </div>
-                    </div>
+          <div className="overflow-x-auto scrollbar-hidden flex">
+            {marketOutlook.map((article) => (
+              <div
+                key={article.id}
+                className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex-shrink-0 mr-4"
+                style={{ width: '200px' }}
+                onClick={() => showArticle({ ...article, section: 'market' })}
+              >
+                <div className="relative">
+                  <img
+                    src={article.image}
+                    srcSet={`${article.image.replace('.jpg', '-small.jpg')} 300w, ${article.image} 600w`}
+                    sizes="(max-width: 600px) 300px, 600px"
+                    loading="lazy"
+                    alt={`${article.title} - Market Outlook - CryptoKhabar`}
+                    className="w-full h-32 sm:h-36 object-cover rounded-lg"
+                  />
+                  <div className="absolute top-2 left-2">
+                    <span className="bg-blue-600 text-white px-2 py-1 rounded text-xs font-medium">
+                      MARKETS
+                    </span>
                   </div>
-                  <div className="p-3">
-                    <h3 className="font-medium text-gray-900 text-sm leading-tight line-clamp-2 hover:text-blue-600 transition-colors">
-                      {article.title}
-                    </h3>
-                    <div className="flex items-center justify-between text-xs text-gray-500 mt-2">
-                      <span>{article.author || 'Market'}</span>
-                      <button
-                        onClick={likeArticle('market', article.id)}
-                        className="hover:text-blue-600 transition-colors flex items-center gap-1"
-                      >
-                        <FaThumbsUp /> {likes[`market-${article.id}`]}
-                      </button>
+                  <div className="absolute bottom-2 right-2">
+                    <div className="bg-black bg-opacity-50 text-white px-1 py-0.5 rounded text-xs flex items-center">
+                      <span className="text-yellow-400 mr-1">●</span>
+                      CryptoKhabar
                     </div>
                   </div>
                 </div>
-              ))}
-            </div>
+                <div className="p-3">
+                  <h3 className="font-medium text-gray-900 text-sm leading-tight line-clamp-2 hover:text-blue-600 transition-colors">
+                    {article.title}
+                  </h3>
+                  <div className="flex items-center justify-between text-xs text-gray-500 mt-2">
+                    <span>{article.author || 'Market'}</span>
+                    <button
+                      onClick={likeArticle('market', article.id)}
+                      className="hover:text-blue-600 transition-colors flex items-center gap-1"
+                    >
+                      <FaThumbsUp /> {likes[`market-${article.id}`]}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </main>
@@ -581,5 +611,3 @@ function Home() {
 }
 
 export default Home;
-
-

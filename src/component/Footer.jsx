@@ -1,12 +1,37 @@
 
 
-
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Twitter, Instagram, Send, MessageCircle } from 'lucide-react';
 
 function Footer() {
+  // Structured data for the footer
+  const footerSchema = {
+    "@context": "https://schema.org",
+    "@type": "WPFooter",
+    "name": "Crypto Khabar Footer",
+    "description": "Footer navigation for Crypto Khabar, providing quick links to cryptocurrency topics, resources, and social media connections.",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Crypto Khabar",
+      "url": "https://cryptookhabar.netlify.app/",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "url": "https://cryptookhabar.netlify.app/contact"
+      }
+    },
+    "url": "https://cryptookhabar.netlify.app/"
+  };
+
   return (
     <footer className="bg-gray-900 text-white py-8 w-full">
+      {/* SEO Structured Data */}
+      <Helmet>
+        <script type="application/ld+json">
+          {JSON.stringify(footerSchema)}
+        </script>
+      </Helmet>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
@@ -58,16 +83,16 @@ function Footer() {
           <div>
             <h3 className="text-lg font-bold mb-4">Follow Us</h3>
             <div className="flex space-x-4">
-              <a href="https://twitter.com" className="hover:text-blue-400 transition-colors p-2 hover:bg-gray-800 rounded">
+              <a href="https://twitter.com" className="hover:text-blue-400 transition-colors p-2 hover:bg-gray-800 rounded" rel="nofollow">
                 <Twitter size={20} />
               </a>
-              <a href="https://instagram.com" className="hover:text-blue-400 transition-colors p-2 hover:bg-gray-800 rounded">
+              <a href="https://instagram.com" className="hover:text-blue-400 transition-colors p-2 hover:bg-gray-800 rounded" rel="nofollow">
                 <Instagram size={20} />
               </a>
-              <a href="https://telegram.org" className="hover:text-blue-400 transition-colors p-2 hover:bg-gray-800 rounded">
+              <a href="https://telegram.org" className="hover:text-blue-400 transition-colors p-2 hover:bg-gray-800 rounded" rel="nofollow">
                 <Send size={20} />
               </a>
-              <a href="https://discord.com" className="hover:text-blue-400 transition-colors p-2 hover:bg-gray-800 rounded">
+              <a href="https://discord.com" className="hover:text-blue-400 transition-colors p-2 hover:bg-gray-800 rounded" rel="nofollow">
                 <MessageCircle size={20} />
               </a>
             </div>

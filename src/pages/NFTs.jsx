@@ -1,11 +1,51 @@
 
 
 import React from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom";
+import { Helmet } from 'react-helmet-async';
 import nftData from "../data/nftData"; // Import nftData.js
 
 function NFTs() {
   const navigate = useNavigate(); // Initialize navigate hook
+
+  // Structured data for the NFT news collection
+  const collectionSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "NFT News and Updates",
+    "description": nftData.nft_news.description || "Explore the latest NFT news, top stories, and recent updates on Crypto Khabar.",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Crypto Khabar",
+      "url": "https://cryptookhabar.netlify.app/"
+    },
+    "mainEntity": [
+      {
+        "@type": "ItemList",
+        "name": "Top NFT Highlights",
+        "itemListElement": nftData.top_nft_stories.stories.map((story, index) => ({
+          "@type": "NewsArticle",
+          "position": index + 1,
+          "headline": story.headline,
+          "image": story.image || "https://via.placeholder.com/500x500",
+          "description": story.summary || story.headline,
+          "url": `https://cryptookhabar.netlify.app/nfts/${story.id}`
+        }))
+      },
+      {
+        "@type": "ItemList",
+        "name": "Recent NFT Updates",
+        "itemListElement": nftData.latest_nft_news.articles.map((article, index) => ({
+          "@type": "NewsArticle",
+          "position": index + 1,
+          "headline": article.headline,
+          "image": article.image || "https://via.placeholder.com/500x500",
+          "description": article.summary || article.headline,
+          "url": `https://cryptookhabar.netlify.app/nfts/${article.id}`
+        }))
+      }
+    ]
+  };
 
   // Handler for navigating to NFTsDetailsPage
   const handleCardClick = (item, type) => {
@@ -14,6 +54,19 @@ function NFTs() {
 
   return (
     <div className="page mt-20">
+      {/* SEO Metadata */}
+      <Helmet>
+        <title>NFT News and Updates - Crypto Khabar</title>
+        <meta
+          name="description"
+          content={nftData.nft_news.description || "Explore the latest NFT news, top stories, and recent updates on Crypto Khabar."}
+        />
+        <link rel="canonical" href="https://cryptookhabar.netlify.app/nfts/" />
+        <script type="application/ld+json">
+          {JSON.stringify(collectionSchema)}
+        </script>
+      </Helmet>
+
       <main className="max-w-7xl mx-auto px-4 py-8">
         {/* NFT News Section */}
         <section className="mb-12">
@@ -43,9 +96,10 @@ function NFTs() {
                 >
                   <img
                     src={story.image}
-                    alt={story.headline}
+                    alt={`Featured image for ${story.headline} in NFT news`}
                     className="w-full h-[500px] object-cover-contain"
                     onError={(e) => (e.target.src = "https://via.placeholder.com/500x500")}
+                    loading="lazy"
                   />
                   <div className="absolute top-2 left-2 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded">
                     {story.tag}
@@ -68,9 +122,10 @@ function NFTs() {
                   <div className="relative w-full h-[calc(100%-64px)]">
                     <img
                       src={story.image}
-                      alt={story.headline}
+                      alt={`Image for ${story.headline} in NFT highlights`}
                       className="w-full h-full object-cover-contain rounded-lg"
                       onError={(e) => (e.target.src = "https://via.placeholder.com/500x500")}
+                      loading="lazy"
                     />
                     <div className="absolute top-2 left-2 bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded">
                       {story.tag}
@@ -101,9 +156,10 @@ function NFTs() {
                 <div className="md:w-1/3">
                   <img
                     src={article.image}
-                    alt={article.headline}
+                    alt={`Image for ${article.headline} in recent NFT updates`}
                     className="w-full h-48 md:h-auto md:max-h-[180px] object-cover-contain rounded-lg"
                     onError={(e) => (e.target.src = "https://via.placeholder.com/500x500")}
+                    loading="lazy"
                   />
                 </div>
                 {/* Article Content */}
