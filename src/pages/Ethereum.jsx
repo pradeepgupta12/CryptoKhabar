@@ -1,7 +1,5 @@
 
 
-
-
 import React from "react";
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from "react-router-dom"; // Import useNavigate
@@ -17,22 +15,7 @@ function Ethereum() {
 
   // Structured data for top stories and articles
   const newsArticlesSchema = [
-    ...ethereumData.top_ethereum_stories.stories.map((story) => ({
-      "@context": "https://schema.org",
-      "@type": "NewsArticle",
-      "headline": story.headline || "Ethereum News Story",
-      "image": story.image || "https://via.placeholder.com/500x500",
-      "datePublished": story.date || "2025-09-11",
-      "author": {
-        "@type": "Organization",
-        "name": "Crypto Khabar"
-      },
-      "publisher": {
-        "@type": "Organization",
-        "name": "Crypto Khabar",
-        "url": "https://cryptookhabar.netlify.app/"
-      }
-    })),
+   
     ...ethereumData.latest_ethereum_news.articles.map((article) => ({
       "@context": "https://schema.org",
       "@type": "NewsArticle",
@@ -47,7 +30,7 @@ function Ethereum() {
       "publisher": {
         "@type": "Organization",
         "name": "Crypto Khabar",
-        "url": "https://cryptookhabar.netlify.app/"
+        "url": "https://cryptokhabar.net/"
       }
     }))
   ];
@@ -56,12 +39,23 @@ function Ethereum() {
     <div className="page mt-20">
       {/* SEO Metadata */}
       <Helmet>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Ethereum News - Crypto Khabar</title>
         <meta
           name="description"
           content={ethereumData.ethereum_news.description || "Stay updated with the latest Ethereum news, trends, and updates at Crypto Khabar."}
         />
-        <link rel="canonical" href="https://cryptookhabar.netlify.app/ethereum/" />
+        <meta name="keywords" content="ethereum news, cryptocurrency, blockchain, Crypto Khabar" />
+        <meta name="author" content="Crypto Khabar Team" />
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="canonical" href="https://cryptokhabar.net/ethereum/" />
+        <meta name="robots" content="index, follow" />
+        <meta property="og:title" content="Ethereum News - Crypto Khabar" />
+        <meta property="og:description" content={ethereumData.ethereum_news.description || "Stay updated with the latest Ethereum news, trends, and updates at Crypto Khabar."} />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://cryptokhabar.net/ethereum/" />
+        <meta property="og:image" content="https://cryptokhabar.net/images/preview.jpg" />
         <script type="application/ld+json">
           {JSON.stringify(newsArticlesSchema)}
         </script>

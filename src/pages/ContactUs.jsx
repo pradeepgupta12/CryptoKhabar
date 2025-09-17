@@ -1,7 +1,5 @@
 
 
-
-
 import { useState } from "react";
 import { Helmet } from 'react-helmet-async';
 import { Mail, Phone, MapPin, Twitter, Linkedin, Facebook } from "lucide-react";
@@ -82,12 +80,12 @@ function ContactUs() {
     "@context": "https://schema.org",
     "@type": "ContactPage",
     "name": "Contact Us - Crypto Khabar",
-    "url": "https://cryptookhabar.netlify.app/contact/",
+    "url": "https://cryptokhabar.net/contact/",
     "description": contactData.askMeQuestion.description || "Get in touch with Crypto Khabar for inquiries, feedback, or support.",
     "publisher": {
       "@type": "Organization",
       "name": "Crypto Khabar",
-      "url": "https://cryptookhabar.netlify.app/",
+      "url": "https://cryptokhabar.net/",
       "contactPoint": [
         {
           "@type": "ContactPoint",
@@ -103,12 +101,23 @@ function ContactUs() {
     <div className="min-h-screen bg-gray-50 py-12 px-4">
       {/* SEO Metadata */}
       <Helmet>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Contact Us - Crypto Khabar</title>
         <meta
           name="description"
           content={contactData.askMeQuestion.description || "Get in touch with Crypto Khabar for inquiries, feedback, or support."}
         />
-        <link rel="canonical" href="https://cryptookhabar.netlify.app/contact/" />
+        <meta name="keywords" content="contact us, crypto khabar, cryptocurrency, support, inquiries" />
+        <meta name="author" content="Crypto Khabar Team" />
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="canonical" href="https://cryptokhabar.net/contact/" />
+        <meta name="robots" content="index, follow" />
+        <meta property="og:title" content="Contact Us - Crypto Khabar" />
+        <meta property="og:description" content={contactData.askMeQuestion.description || "Get in touch with Crypto Khabar for inquiries, feedback, or support."} />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://cryptokhabar.net/contact/" />
+        <meta property="og:image" content="https://cryptokhabar.net/images/preview.jpg" />
         <script type="application/ld+json">
           {JSON.stringify(contactSchema)}
         </script>

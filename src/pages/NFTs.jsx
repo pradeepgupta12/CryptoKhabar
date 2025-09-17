@@ -17,7 +17,7 @@ function NFTs() {
     "publisher": {
       "@type": "Organization",
       "name": "Crypto Khabar",
-      "url": "https://cryptookhabar.netlify.app/"
+      "url": "https://cryptokhabar.net/"
     },
     "mainEntity": [
       {
@@ -29,7 +29,7 @@ function NFTs() {
           "headline": story.headline,
           "image": story.image || "https://via.placeholder.com/500x500",
           "description": story.summary || story.headline,
-          "url": `https://cryptookhabar.netlify.app/nfts/${story.id}`
+          "url": `https://cryptokhabar.net/nfts/${story.id}`
         }))
       },
       {
@@ -41,7 +41,7 @@ function NFTs() {
           "headline": article.headline,
           "image": article.image || "https://via.placeholder.com/500x500",
           "description": article.summary || article.headline,
-          "url": `https://cryptookhabar.netlify.app/nfts/${article.id}`
+          "url": `https://cryptokhabar.net/nfts/${article.id}`
         }))
       }
     ]
@@ -56,12 +56,23 @@ function NFTs() {
     <div className="page mt-20">
       {/* SEO Metadata */}
       <Helmet>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>NFT News and Updates - Crypto Khabar</title>
         <meta
           name="description"
           content={nftData.nft_news.description || "Explore the latest NFT news, top stories, and recent updates on Crypto Khabar."}
         />
-        <link rel="canonical" href="https://cryptookhabar.netlify.app/nfts/" />
+        <meta name="keywords" content="NFT news, non-fungible tokens, cryptocurrency, Crypto Khabar" />
+        <meta name="author" content="Crypto Khabar Team" />
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="canonical" href="https://cryptokhabar.net/nfts/" />
+        <meta name="robots" content="index, follow" />
+        <meta property="og:title" content="NFT News and Updates - Crypto Khabar" />
+        <meta property="og:description" content={nftData.nft_news.description || "Explore the latest NFT news, top stories, and recent updates on Crypto Khabar."} />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://cryptokhabar.net/nfts/" />
+        <meta property="og:image" content="https://cryptokhabar.net/images/preview.jpg" />
         <script type="application/ld+json">
           {JSON.stringify(collectionSchema)}
         </script>

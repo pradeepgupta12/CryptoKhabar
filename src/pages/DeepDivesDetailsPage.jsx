@@ -1,9 +1,5 @@
 
 
-
-
-
-
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { FaThumbsUp, FaComment, FaShare } from 'react-icons/fa';
@@ -41,7 +37,7 @@ function DeepDivesDetailsPage() {
     "publisher": {
       "@type": "Organization",
       "name": "Crypto Khabar",
-      "url": "https://cryptookhabar.netlify.app/"
+      "url": "https://cryptokhabar.net/"
     }
   };
 
@@ -80,12 +76,23 @@ function DeepDivesDetailsPage() {
     <div className="w-full min-h-screen bg-gray-100 pt-12 p-4 mt-8">
       {/* SEO Metadata */}
       <Helmet>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>{`${article.title || 'Deep Dive'} - Crypto Khabar`}</title>
         <meta
           name="description"
           content={article.content || `Read an in-depth analysis: ${article.title || 'Deep Dive'} on Crypto Khabar.`}
         />
-        <link rel="canonical" href={`https://cryptookhabar.netlify.app/deep-dives/${article.id}`} />
+        <meta name="keywords" content={`deep dive, cryptocurrency, blockchain, ${article.title ? article.title.toLowerCase() : ''}, Crypto Khabar`} />
+        <meta name="author" content={article.author || "Crypto Khabar Team"} />
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="canonical" href={`https://cryptokhabar.net/deep-dives/${article.id}`} />
+        <meta name="robots" content="index, follow" />
+        <meta property="og:title" content={`${article.title || 'Deep Dive'} - Crypto Khabar`} />
+        <meta property="og:description" content={article.content || `Read an in-depth analysis: ${article.title || 'Deep Dive'} on Crypto Khabar.`} />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content={`https://cryptokhabar.net/deep-dives/${article.id}`} />
+        <meta property="og:image" content={article.image?.link || 'https://cryptokhabar.net/images/preview.jpg'} />
         <script type="application/ld+json">
           {JSON.stringify(articleSchema)}
         </script>

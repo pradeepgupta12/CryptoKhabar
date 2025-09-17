@@ -1,8 +1,6 @@
 
 
 
-
-
 import React from "react";
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from "react-router-dom"; // Import useNavigate
@@ -18,22 +16,7 @@ function Bitcoin() {
 
   // Structured data for top stories and articles
   const newsArticlesSchema = [
-    ...bitcoinData.top_bitcoin_stories.stories.map((story) => ({
-      "@context": "https://schema.org",
-      "@type": "NewsArticle",
-      "headline": story.headline || "Bitcoin News Story",
-      "image": story.image || "https://via.placeholder.com/500x500",
-      "datePublished": story.date || "2025-09-11",
-      "author": {
-        "@type": "Organization",
-        "name": "Crypto Khabar"
-      },
-      "publisher": {
-        "@type": "Organization",
-        "name": "Crypto Khabar",
-        "url": "https://cryptookhabar.netlify.app/"
-      }
-    })),
+    
     ...bitcoinData.latest_bitcoin_news.articles.map((article) => ({
       "@context": "https://schema.org",
       "@type": "NewsArticle",
@@ -48,7 +31,7 @@ function Bitcoin() {
       "publisher": {
         "@type": "Organization",
         "name": "Crypto Khabar",
-        "url": "https://cryptookhabar.netlify.app/"
+        "url": "https://cryptokhabar.net/"
       }
     }))
   ];
@@ -57,12 +40,23 @@ function Bitcoin() {
     <div className="page mt-20">
       {/* SEO Metadata */}
       <Helmet>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Bitcoin News - Crypto Khabar</title>
         <meta
           name="description"
           content={bitcoinData.bitcoin_news.description || "Stay updated with the latest Bitcoin news, market trends, and insights at Crypto Khabar."}
         />
-        <link rel="canonical" href="https://cryptookhabar.netlify.app/bitcoin/" />
+        <meta name="keywords" content="bitcoin news, cryptocurrency, bitcoin, market trends, Crypto Khabar" />
+        <meta name="author" content="Crypto Khabar Team" />
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="canonical" href="https://cryptokhabar.net/bitcoin/" />
+        <meta name="robots" content="index, follow" />
+        <meta property="og:title" content="Bitcoin News - Crypto Khabar" />
+        <meta property="og:description" content={bitcoinData.bitcoin_news.description || "Stay updated with the latest Bitcoin news, market trends, and insights at Crypto Khabar."} />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://cryptokhabar.net/bitcoin/" />
+        <meta property="og:image" content="https://cryptokhabar.net/images/preview.jpg" />
         <script type="application/ld+json">
           {JSON.stringify(newsArticlesSchema)}
         </script>

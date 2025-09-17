@@ -1,7 +1,5 @@
 
 
-
-
 import React from "react";
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from "react-router-dom"; // Import useNavigate
@@ -17,22 +15,7 @@ function DeFi() {
 
   // Structured data for top stories and articles
   const newsArticlesSchema = [
-    ...defiData.top_defi_stories.stories.map((story) => ({
-      "@context": "https://schema.org",
-      "@type": "NewsArticle",
-      "headline": story.headline || "DeFi News Story",
-      "image": story.image || "https://via.placeholder.com/500x500",
-      "datePublished": story.date || "2025-09-11",
-      "author": {
-        "@type": "Organization",
-        "name": "Crypto Khabar"
-      },
-      "publisher": {
-        "@type": "Organization",
-        "name": "Crypto Khabar",
-        "url": "https://cryptookhabar.netlify.app/"
-      }
-    })),
+    
     ...defiData.latest_defi_news.articles.map((article) => ({
       "@context": "https://schema.org",
       "@type": "NewsArticle",
@@ -47,7 +30,7 @@ function DeFi() {
       "publisher": {
         "@type": "Organization",
         "name": "Crypto Khabar",
-        "url": "https://cryptookhabar.netlify.app/"
+        "url": "https://cryptokhabar.net/"
       }
     }))
   ];
@@ -56,12 +39,23 @@ function DeFi() {
     <div className="page mt-20">
       {/* SEO Metadata */}
       <Helmet>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>DeFi News - Crypto Khabar</title>
         <meta
           name="description"
           content={defiData.defi_news.description || "Explore the latest DeFi news, trends, and updates at Crypto Khabar."}
         />
-        <link rel="canonical" href="https://cryptookhabar.netlify.app/defi/" />
+        <meta name="keywords" content="defi news, decentralized finance, cryptocurrency, defi, Crypto Khabar" />
+        <meta name="author" content="Crypto Khabar Team" />
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="canonical" href="https://cryptokhabar.net/defi/" />
+        <meta name="robots" content="index, follow" />
+        <meta property="og:title" content="DeFi News - Crypto Khabar" />
+        <meta property="og:description" content={defiData.defi_news.description || "Explore the latest DeFi news, trends, and updates at Crypto Khabar."} />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://cryptokhabar.net/defi/" />
+        <meta property="og:image" content="https://cryptokhabar.net/images/preview.jpg" />
         <script type="application/ld+json">
           {JSON.stringify(newsArticlesSchema)}
         </script>

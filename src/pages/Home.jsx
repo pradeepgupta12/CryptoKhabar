@@ -1,7 +1,3 @@
-  
-
-
-
 
 
 import { useState } from 'react';
@@ -94,10 +90,10 @@ function Home() {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     name: 'CryptoKhabar',
-    url: 'https://cryptookhabar.netlify.app/',
+    url: 'https://cryptokhabar.net/',
     potentialAction: {
       '@type': 'SearchAction',
-      target: 'https://cryptookhabar.netlify.app/search?q={search_term_string}',
+      target: 'https://cryptokhabar.net/search?q={search_term_string}',
       'query-input': 'required name=search_term_string'
     }
   };
@@ -109,8 +105,8 @@ function Home() {
       {
         '@type': 'ListItem',
         position: 1,
-        name: 'होम',
-        item: 'https://cryptookhabar.netlify.app/'
+        name: 'Home',
+        item: 'https://cryptokhabar.net/'
       }
     ]
   };
@@ -118,11 +114,20 @@ function Home() {
   return (
     <div className="w-full min-h-screen bg-gray-100 mt-20">
       <Helmet>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>CryptoKhabar | Latest Crypto News & Updates</title>
         <meta name="description" content="Stay updated with the latest cryptocurrency news, market trends, and deep dives at CryptoKhabar." />
         <meta name="keywords" content="crypto news, cryptocurrency, bitcoin, blockchain, market updates, CryptoKhabar" />
-        <link rel="canonical" href="https://cryptookhabar.netlify.app/" />
+        <meta name="author" content="CryptoKhabar Team" />
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="canonical" href="https://cryptokhabar.net/" />
         <meta name="robots" content="index, follow" />
+        <meta property="og:title" content="CryptoKhabar | Latest Crypto News & Updates" />
+        <meta property="og:description" content="Stay updated with the latest cryptocurrency news, market trends, and deep dives at CryptoKhabar." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://cryptokhabar.net/" />
+        <meta property="og:image" content="https://cryptokhabar.net/images/preview.jpg" />
         <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
         <script type="application/ld+json">{JSON.stringify(breadcrumbData)}</script>
       </Helmet>

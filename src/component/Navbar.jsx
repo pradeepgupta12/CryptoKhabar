@@ -77,28 +77,28 @@ const Navbar = ({ loading, error }) => {
     "publisher": {
       "@type": "Organization",
       "name": "Crypto Khabar",
-      "url": "https://cryptookhabar.netlify.app/"
+      "url": "https://cryptokhabar.net/"
     },
     "potentialAction": [
       {
         "@type": "SearchAction",
-        "target": "https://cryptookhabar.netlify.app/all?q={search_term_string}",
+        "target": "https://cryptokhabar.net/all?q={search_term_string}",
         "query-input": "required name=search_term_string"
       },
       ...newsCategories.map(category => ({
         "@type": "ViewAction",
         "name": category.label,
-        "target": `https://cryptookhabar.netlify.app${category.to}`
+        "target": `https://cryptokhabar.net${category.to}`
       })),
       ...mainNavItems.map(item => ({
         "@type": "ViewAction",
         "name": item.label,
-        "target": `https://cryptookhabar.netlify.app${item.to}`
+        "target": `https://cryptokhabar.net${item.to}`
       })),
       {
         "@type": "ViewAction",
         "name": "Home",
-        "target": "https://cryptookhabar.netlify.app/"
+        "target": "https://cryptokhabar.net/"
       }
     ]
   };
@@ -107,6 +107,18 @@ const Navbar = ({ loading, error }) => {
     <>
       {/* SEO Structured Data */}
       <Helmet>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="Main navigation for Crypto Khabar, providing links to Home, News categories (Bitcoin, Blockchain, NFTs, DeFi, Ethereum, All), Markets, Analysis, and a live market ticker." />
+        <meta name="keywords" content="Crypto Khabar, navigation, cryptocurrency, news, markets, analysis" />
+        <meta name="author" content="Crypto Khabar Team" />
+        <link rel="icon" href="/favicon.ico" />
+        <meta name="robots" content="index, follow" />
+        <meta property="og:title" content="Crypto Khabar Navigation" />
+        <meta property="og:description" content="Main navigation for Crypto Khabar, providing links to Home, News categories (Bitcoin, Blockchain, NFTs, DeFi, Ethereum, All), Markets, Analysis, and a live market ticker." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://cryptokhabar.net/" />
+        <meta property="og:image" content="https://cryptokhabar.net/images/preview.jpg" />
         <script type="application/ld+json">
           {JSON.stringify(navigationSchema)}
         </script>

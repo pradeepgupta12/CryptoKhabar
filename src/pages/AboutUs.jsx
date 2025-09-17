@@ -1,12 +1,10 @@
 
 
 
-
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Mail, Phone, MapPin, Users, Target, Eye, Heart, Twitter, Linkedin, Facebook, ArrowRight, Star, Award, TrendingUp, Shield } from 'lucide-react';
 import aboutUsData from "../data/aboutUsData";
-
 
 function AboutUs() {
   const [expandedCards, setExpandedCards] = useState({});
@@ -28,24 +26,35 @@ function AboutUs() {
     <div className="w-full min-h-screen bg-gray-50 mt-20">
       {/* SEO Metadata */}
       <Helmet>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>About Crypto Khabar - Your Trusted Cryptocurrency News Source</title>
         <meta
           name="description"
           content="Learn about Crypto Khabar, your trusted source for cryptocurrency news, market analysis, and insights. Discover our mission, vision, and team."
         />
-        <link rel="canonical" href="https://cryptookhabar.netlify.app/about/" />
+        <meta name="keywords" content="crypto news, cryptocurrency, about us, Crypto Khabar, market analysis" />
+        <meta name="author" content="Crypto Khabar Team" />
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="canonical" href="https://cryptokhabar.net/about/" />
+        <meta name="robots" content="index, follow" />
+        <meta property="og:title" content="About Crypto Khabar - Your Trusted Cryptocurrency News Source" />
+        <meta property="og:description" content="Learn about Crypto Khabar, your trusted source for cryptocurrency news, market analysis, and insights. Discover our mission, vision, and team." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://cryptokhabar.net/about/" />
+        <meta property="og:image" content="https://cryptokhabar.net/images/preview.jpg" />
         <script type="application/ld+json">
           {`
             {
               "@context": "https://schema.org",
               "@type": "AboutPage",
               "name": "About Crypto Khabar",
-              "url": "https://cryptookhabar.netlify.app/about/",
+              "url": "https://cryptokhabar.net/about/",
               "description": "${aboutUsData.company.description || 'Learn about Crypto Khabar, your trusted source for cryptocurrency news, market analysis, and insights.'}",
               "publisher": {
                 "@type": "Organization",
                 "name": "Crypto Khabar",
-                "url": "https://cryptookhabar.netlify.app/"
+                "url": "https://cryptokhabar.net/"
               }
             }
           `}

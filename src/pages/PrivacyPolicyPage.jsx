@@ -1,6 +1,5 @@
 
 
-
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { ChevronDown, ChevronUp, Shield, Mail, Phone, MapPin, Eye, Edit, Trash2, Download, UserCheck } from 'lucide-react';
@@ -27,7 +26,7 @@ const PrivacyPolicyPage = () => {
     "publisher": {
       "@type": "Organization",
       "name": "Crypto Khabar",
-      "url": "https://cryptookhabar.netlify.app/"
+      "url": "https://cryptokhabar.net/"
     },
     "mainEntity": {
       "@type": "CreativeWork",
@@ -63,12 +62,23 @@ const PrivacyPolicyPage = () => {
     <div className="min-h-screen bg-white mt-20">
       {/* SEO Metadata */}
       <Helmet>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Privacy Policy - Crypto Khabar</title>
         <meta
           name="description"
           content="Learn how Crypto Khabar collects, uses, shares, and protects your personal and non-personal information, including details on data collection, usage, sharing, storage, user rights, compliance, and contact information."
         />
-        <link rel="canonical" href="https://cryptookhabar.netlify.app/privacy-policy/" />
+        <meta name="keywords" content="privacy policy, data protection, Crypto Khabar" />
+        <meta name="author" content="Crypto Khabar Team" />
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="canonical" href="https://cryptokhabar.net/privacy-policy/" />
+        <meta name="robots" content="index, follow" />
+        <meta property="og:title" content="Privacy Policy - Crypto Khabar" />
+        <meta property="og:description" content="Learn how Crypto Khabar collects, uses, shares, and protects your personal and non-personal information, including details on data collection, usage, sharing, storage, user rights, compliance, and contact information." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://cryptokhabar.net/privacy-policy/" />
+        <meta property="og:image" content="https://cryptokhabar.net/images/preview.jpg" />
         <script type="application/ld+json">
           {JSON.stringify(webpageSchema)}
         </script>

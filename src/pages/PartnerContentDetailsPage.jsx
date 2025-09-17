@@ -37,7 +37,7 @@ function PartnerContentDetailsPage() {
     "publisher": {
       "@type": "Organization",
       "name": "Crypto Khabar",
-      "url": "https://cryptookhabar.netlify.app/"
+      "url": "https://cryptokhabar.net/"
     }
   };
 
@@ -76,12 +76,23 @@ function PartnerContentDetailsPage() {
     <div className="w-full min-h-screen bg-gray-100 pt-12 p-4 mt-8">
       {/* SEO Metadata */}
       <Helmet>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>{`${article.title || 'Partner Content'} - Crypto Khabar`}</title>
         <meta
           name="description"
           content={article.fullDescription || article.shortDescription || `Read the latest partner content: ${article.title || 'Partner Content'} on Crypto Khabar.`}
         />
-        <link rel="canonical" href={`https://cryptookhabar.netlify.app/partner-content/${article.id}`} />
+        <meta name="keywords" content={`partner content, cryptocurrency, ${article.title ? article.title.toLowerCase() : ''}, Crypto Khabar`} />
+        <meta name="author" content={article.author || "Crypto Khabar Team"} />
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="canonical" href={`https://cryptokhabar.net/partner-content/${article.id}`} />
+        <meta name="robots" content="index, follow" />
+        <meta property="og:title" content={`${article.title || 'Partner Content'} - Crypto Khabar`} />
+        <meta property="og:description" content={article.fullDescription || article.shortDescription || `Read the latest partner content: ${article.title || 'Partner Content'} on Crypto Khabar.`} />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content={`https://cryptokhabar.net/partner-content/${article.id}`} />
+        <meta property="og:image" content={article.image || 'https://cryptokhabar.net/images/preview.jpg'} />
         <script type="application/ld+json">
           {JSON.stringify(articleSchema)}
         </script>
@@ -177,7 +188,7 @@ function PartnerContentDetailsPage() {
                     <img
                       src="https://images.unsplash.com/photo-1549421263-5ec394a5adf3"
                       alt="Advertisement for cryptocurrency trading"
-                      className="w-full h-48 sm:h-64 md:h-56 object-cover-contain rounded-lg cursor-pointer"
+                      className="w-full h-48 sm:h-64 md:h-56 object-cover rounded-lg cursor-pointer"
                       loading="lazy"
                     />
                   </a>

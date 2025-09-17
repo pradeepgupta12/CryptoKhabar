@@ -1,4 +1,5 @@
 
+
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { FaThumbsUp, FaComment, FaShare } from 'react-icons/fa';
@@ -36,7 +37,7 @@ function PressReleaseDetailsPage() {
     "publisher": {
       "@type": "Organization",
       "name": "Crypto Khabar",
-      "url": "https://cryptookhabar.netlify.app/"
+      "url": "https://cryptokhabar.net/"
     }
   };
 
@@ -75,12 +76,23 @@ function PressReleaseDetailsPage() {
     <div className="w-full min-h-screen bg-gray-100 pt-12 p-4 mt-8">
       {/* SEO Metadata */}
       <Helmet>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>{`${article.title || 'Press Release'} - Crypto Khabar`}</title>
         <meta
           name="description"
           content={article.fullDescription || article.shortDescription || `Read the latest press release: ${article.title || 'Press Release'} on Crypto Khabar.`}
         />
-        <link rel="canonical" href={`https://cryptookhabar.netlify.app/press-releases/${article.id}`} />
+        <meta name="keywords" content={`press release, cryptocurrency, ${article.title ? article.title.toLowerCase() : ''}, Crypto Khabar`} />
+        <meta name="author" content={article.author || "Crypto Khabar Team"} />
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="canonical" href={`https://cryptokhabar.net/press-releases/${article.id}`} />
+        <meta name="robots" content="index, follow" />
+        <meta property="og:title" content={`${article.title || 'Press Release'} - Crypto Khabar`} />
+        <meta property="og:description" content={article.fullDescription || article.shortDescription || `Read the latest press release: ${article.title || 'Press Release'} on Crypto Khabar.`} />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content={`https://cryptokhabar.net/press-releases/${article.id}`} />
+        <meta property="og:image" content={article.image || 'https://cryptokhabar.net/images/preview.jpg'} />
         <script type="application/ld+json">
           {JSON.stringify(articleSchema)}
         </script>

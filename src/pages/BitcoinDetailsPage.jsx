@@ -1,7 +1,6 @@
 
 
 
-
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { FaThumbsUp, FaComment, FaShare } from 'react-icons/fa';
@@ -39,7 +38,7 @@ function BitcoinDetailsPage() {
     "publisher": {
       "@type": "Organization",
       "name": "Crypto Khabar",
-      "url": "https://cryptookhabar.netlify.app/"
+      "url": "https://cryptokhabar.net/"
     }
   };
 
@@ -84,12 +83,23 @@ function BitcoinDetailsPage() {
     <div className="w-full min-h-screen bg-gray-100 pt-12 p-4 mt-8">
       {/* SEO Metadata */}
       <Helmet>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>{`${item.headline || 'Bitcoin News'} - Crypto Khabar`}</title>
         <meta
           name="description"
           content={item.summary || `Read the latest Bitcoin news: ${item.headline || 'Bitcoin News'} on Crypto Khabar.`}
         />
-        <link rel="canonical" href={`https://cryptookhabar.netlify.app/bitcoin/${item.id}`} />
+        <meta name="keywords" content={`bitcoin news, cryptocurrency, bitcoin, ${item.headline ? item.headline.toLowerCase() : ''}, Crypto Khabar`} />
+        <meta name="author" content="Crypto Khabar Team" />
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="canonical" href={`https://cryptokhabar.net/bitcoin/${item.id}`} />
+        <meta name="robots" content="index, follow" />
+        <meta property="og:title" content={`${item.headline || 'Bitcoin News'} - Crypto Khabar`} />
+        <meta property="og:description" content={item.summary || `Read the latest Bitcoin news: ${item.headline || 'Bitcoin News'} on Crypto Khabar.`} />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content={`https://cryptokhabar.net/bitcoin/${item.id}`} />
+        <meta property="og:image" content={item.image || 'https://cryptokhabar.net/images/preview.jpg'} />
         <script type="application/ld+json">
           {JSON.stringify(articleSchema)}
         </script>

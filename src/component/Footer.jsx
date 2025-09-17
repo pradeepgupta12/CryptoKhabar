@@ -14,19 +14,31 @@ function Footer() {
     "publisher": {
       "@type": "Organization",
       "name": "Crypto Khabar",
-      "url": "https://cryptookhabar.netlify.app/",
+      "url": "https://cryptokhabar.net/",
       "contactPoint": {
         "@type": "ContactPoint",
-        "url": "https://cryptookhabar.netlify.app/contact"
+        "url": "https://cryptokhabar.net/contact"
       }
     },
-    "url": "https://cryptookhabar.netlify.app/"
+    "url": "https://cryptokhabar.net/"
   };
 
   return (
     <footer className="bg-gray-900 text-white py-8 w-full">
       {/* SEO Structured Data */}
       <Helmet>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="Footer navigation for Crypto Khabar, providing quick links to cryptocurrency topics, resources, and social media connections." />
+        <meta name="keywords" content="Crypto Khabar, footer, cryptocurrency, news, resources, social media" />
+        <meta name="author" content="Crypto Khabar Team" />
+        <link rel="icon" href="/favicon.ico" />
+        <meta name="robots" content="index, follow" />
+        <meta property="og:title" content="Crypto Khabar Footer" />
+        <meta property="og:description" content="Footer navigation for Crypto Khabar, providing quick links to cryptocurrency topics, resources, and social media connections." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://cryptokhabar.net/" />
+        <meta property="og:image" content="https://cryptokhabar.net/images/preview.jpg" />
         <script type="application/ld+json">
           {JSON.stringify(footerSchema)}
         </script>

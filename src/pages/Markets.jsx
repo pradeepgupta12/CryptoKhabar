@@ -17,7 +17,7 @@ function Markets() {
     "publisher": {
       "@type": "Organization",
       "name": "Crypto Khabar",
-      "url": "https://cryptookhabar.netlify.app/"
+      "url": "https://cryptokhabar.net/"
     },
     "dataset": [
       {
@@ -119,12 +119,23 @@ function Markets() {
     <div className="page mt-20">
       {/* SEO Metadata */}
       <Helmet>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Cryptocurrency Market Stats - Crypto Khabar</title>
         <meta
           name="description"
           content="Explore real-time cryptocurrency market statistics, including total market cap, 24h trading volume, BTC dominance, and top cryptocurrencies by market cap and volume on Crypto Khabar."
         />
-        <link rel="canonical" href="https://cryptookhabar.netlify.app/markets/" />
+        <meta name="keywords" content="cryptocurrency market, market stats, total market cap, BTC dominance, Crypto Khabar" />
+        <meta name="author" content="Crypto Khabar Team" />
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="canonical" href="https://cryptokhabar.net/markets/" />
+        <meta name="robots" content="index, follow" />
+        <meta property="og:title" content="Cryptocurrency Market Stats - Crypto Khabar" />
+        <meta property="og:description" content="Explore real-time cryptocurrency market statistics, including total market cap, 24h trading volume, BTC dominance, and top cryptocurrencies by market cap and volume on Crypto Khabar." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://cryptokhabar.net/markets/" />
+        <meta property="og:image" content="https://cryptokhabar.net/images/preview.jpg" />
         <script type="application/ld+json">
           {JSON.stringify(datasetSchema)}
         </script>

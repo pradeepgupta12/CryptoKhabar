@@ -1,8 +1,5 @@
 
 
-
-
-
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { FaThumbsUp, FaComment, FaShare } from 'react-icons/fa';
@@ -35,7 +32,7 @@ function LatestCasinoNewsDetailsPage() {
     "publisher": {
       "@type": "Organization",
       "name": "Crypto Khabar",
-      "url": "https://cryptookhabar.netlify.app/"
+      "url": "https://cryptokhabar.net/"
     }
   };
 
@@ -82,12 +79,23 @@ function LatestCasinoNewsDetailsPage() {
     <div className="w-full min-h-screen bg-gray-100 pt-12 p-4 mt-8">
       {/* SEO Metadata */}
       <Helmet>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>{`${article.title || 'Casino News'} - Crypto Khabar`}</title>
         <meta
           name="description"
           content={article.description || `Read the latest casino news: ${article.title || 'Casino News'} on Crypto Khabar.`}
         />
-        <link rel="canonical" href={`https://cryptookhabar.netlify.app/latest-casino-news/${article.id}`} />
+        <meta name="keywords" content={`casino news, cryptocurrency, ${article.title ? article.title.toLowerCase() : ''}, Crypto Khabar`} />
+        <meta name="author" content={article.author || "Crypto Khabar Team"} />
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="canonical" href={`https://cryptokhabar.net/latest-casino-news/${article.id}`} />
+        <meta name="robots" content="index, follow" />
+        <meta property="og:title" content={`${article.title || 'Casino News'} - Crypto Khabar`} />
+        <meta property="og:description" content={article.description || `Read the latest casino news: ${article.title || 'Casino News'} on Crypto Khabar.`} />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content={`https://cryptokhabar.net/latest-casino-news/${article.id}`} />
+        <meta property="og:image" content={article.image?.link || 'https://cryptokhabar.net/images/preview.jpg'} />
         <script type="application/ld+json">
           {JSON.stringify(articleSchema)}
         </script>

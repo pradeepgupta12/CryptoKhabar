@@ -55,7 +55,7 @@ function All() {
     "publisher": {
       "@type": "Organization",
       "name": "Crypto Khabar",
-      "url": "https://cryptookhabar.netlify.app/"
+      "url": "https://cryptokhabar.net/"
     }
   }));
 
@@ -63,12 +63,23 @@ function All() {
     <div className="page mt-20">
       {/* SEO Metadata */}
       <Helmet>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>All Crypto News - Crypto Khabar</title>
         <meta
           name="description"
           content="Explore the latest cryptocurrency news across Bitcoin, Ethereum, Blockchain, DeFi, and NFTs. Stay updated with market trends and insights at Crypto Khabar."
         />
-        <link rel="canonical" href="https://cryptookhabar.netlify.app/all/" />
+        <meta name="keywords" content="crypto news, cryptocurrency, bitcoin, ethereum, blockchain, defi, nft, Crypto Khabar" />
+        <meta name="author" content="Crypto Khabar Team" />
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="canonical" href="https://cryptokhabar.net/all/" />
+        <meta name="robots" content="index, follow" />
+        <meta property="og:title" content="All Crypto News - Crypto Khabar" />
+        <meta property="og:description" content="Explore the latest cryptocurrency news across Bitcoin, Ethereum, Blockchain, DeFi, and NFTs. Stay updated with market trends and insights at Crypto Khabar." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://cryptokhabar.net/all/" />
+        <meta property="og:image" content="https://cryptokhabar.net/images/preview.jpg" />
         <script type="application/ld+json">
           {JSON.stringify(newsArticlesSchema)}
         </script>

@@ -35,6 +35,7 @@ const AboutUs = lazy(() => import('../pages/AboutUs'));
 const ContactUs = lazy(() => import('../pages/ContactUs'));
 const PrivacyPolicyPage = lazy(() => import('../pages/PrivacyPolicyPage'));
 const TermsOfService = lazy(() => import('../pages/TermsOfService'));
+const NotFoundPage = lazy(() => import('../pages/NotFoundPage'));
 
 // Scroll handler
 const ScrollToTop = () => {
@@ -51,7 +52,7 @@ const AppRoutes = () => {
       <Router>
         <ScrollToTop />
         <Navbar />
-        <main className="min-h-screen"> {/* Added main tag with min-h-screen */}
+        <main className="min-h-screen">
           <Suspense fallback={<LoadingSpinner />}>
             <Routes>
               <Route path="/" element={<Home />} />
@@ -80,6 +81,7 @@ const AppRoutes = () => {
               <Route path="/contact" element={<ContactUs />} />
               <Route path="/Privacy" element={<PrivacyPolicyPage />} />
               <Route path="/terms" element={<TermsOfService />} />
+              <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </Suspense>
         </main>
