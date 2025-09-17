@@ -68,7 +68,7 @@ function PressReleaseDetailsPage() {
 
   const handleArticleClick = (relatedArticle) => {
     console.log('Navigating to article:', relatedArticle);
-    navigate('/press-releases', { state: { article: relatedArticle } });
+    navigate('/press-release', { state: { article: relatedArticle } });
     window.scrollTo(0, 0); // Scroll to top on navigation
   };
 
@@ -86,12 +86,12 @@ function PressReleaseDetailsPage() {
         <meta name="keywords" content={`press release, cryptocurrency, ${article.title ? article.title.toLowerCase() : ''}, Crypto Khabar`} />
         <meta name="author" content={article.author || "Crypto Khabar Team"} />
         <link rel="icon" href="/favicon.ico" />
-        <link rel="canonical" href={`https://cryptokhabar.net/press-releases/${article.id}`} />
+        <link rel="canonical" href={`https://cryptokhabar.net/press-release/${article.id}`} />
         <meta name="robots" content="index, follow" />
         <meta property="og:title" content={`${article.title || 'Press Release'} - Crypto Khabar`} />
         <meta property="og:description" content={article.fullDescription || article.shortDescription || `Read the latest press release: ${article.title || 'Press Release'} on Crypto Khabar.`} />
         <meta property="og:type" content="article" />
-        <meta property="og:url" content={`https://cryptokhabar.net/press-releases/${article.id}`} />
+        <meta property="og:url" content={`https://cryptokhabar.net/press-release/${article.id}`} />
         <meta property="og:image" content={article.image || 'https://cryptokhabar.net/images/preview.jpg'} />
         <script type="application/ld+json">
           {JSON.stringify(articleSchema)}
@@ -238,3 +238,4 @@ function PressReleaseDetailsPage() {
 }
 
 export default PressReleaseDetailsPage;
+
